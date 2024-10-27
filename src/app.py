@@ -1,24 +1,38 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, redirect, jsonify
 import mysql.connector
 
 app = Flask(__name__)
 
-# Configurando a conexão com o MySQL
-db_config = db_config = {
-    'host': '127.0.0.1',
-    'port': '3306',
-    'user': 'root',
-    'password': 'Arthur17*',
-    'database': 'oficina_db'
-}
+# Página inicial
+@app.route('/')
+@app.route('/home')
+def home():
+    return render_template('index.html')
+
+@app.route('/formulario')
+def formulario():
+    return render_template('formulario.html')
 
 @app.route('/submit_course_registration', methods=['POST'])
 def submit_course_registration():
-    try:
-        # Conectando ao banco de dados
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor()
 
+    # Configuração do banco de dados
+    # -------------------------------------------------------------------
+    # -------------------------->>> ATENÇÃO <<<--------------------------
+    # -------------------------------------------------------------------
+    # --------- Editar essas configurações abaixo com os dados ----------
+    # ---------------- que serão utilizados em produção! ----------------
+    # -------------------------------------------------------------------
+    db = mysql.connector.connect(
+         host="AlexAlmeidaLeonardo.mysql.pythonanywhere-services.com",
+         user="AlexAlmeidaLeona",
+         password="vo_ambrosina_2024",  # Se a senha estiver em branco, deixe assim
+         database="AlexAlmeidaLeona$vo_ambrosina",
+         port=3306  # Use a porta 3306, que é a padrão do MySQL no XAMPP
+     )
+
+    
+    try:
         # Recebendo os dados do formulário
         data = request.form
         nome = data.get('name')
@@ -33,6 +47,9 @@ def submit_course_registration():
         oficina = data.get('course')
         mensagem = data.get('message')
 
+        # Conectando ao banco de dados
+        cursor = db.cursor()
+
         # Inserindo os dados no banco de dados
         query = """
         INSERT INTO inscricoes (nome, email, telefone, data_nascimento, cep, rua, numero, cidade, estado, oficina, mensagem)
@@ -41,7 +58,7 @@ def submit_course_registration():
         values = (nome, email, telefone, data_nascimento, cep, rua, numero, cidade, estado, oficina, mensagem)
 
         cursor.execute(query, values)
-        conn.commit()
+        db.commit()
 
         return jsonify({"message": "Inscrição realizada com sucesso!"}), 200
 
@@ -52,8 +69,8 @@ def submit_course_registration():
     finally:
         if cursor:
             cursor.close()
-        if conn:
-            conn.close()
+        if db:
+            db.close()
 
 if __name__ == '__main__':
     app.run(debug=True)

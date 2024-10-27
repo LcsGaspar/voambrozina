@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-image: url('imagens/Imagem do WhatsApp de 2024-10-26 à(s) 21.07.30_a8fd463e.jpg');
+            background-image: url('./static/imagens/fundodoformulario.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -150,7 +150,7 @@
             <small id="phone-error" class="error-message">Telefone deve seguir o formato (XX) XXXXX-XXXX.</small>
 
             <label for="cep">CEP</label>
-            <input type="text" id="cep" name="cep" required placeholder="00000-000" onblur="buscarEndereco()">
+            <input type="text" id="cep" name="cep" required placeholder="00000-000">
             <small id="cep-error" class="error-message">CEP deve ter 8 dígitos.</small>
 
             <label for="rua">Rua</label>
@@ -182,13 +182,13 @@
             <label for="course">Oficina:</label>
             <select id="course" name="course" required>
                 <option value="" disabled selected>Selecione uma oficina</option>
-                <option value="oficina1">Informática</option>
-                <option value="oficina2">Clubinho de Inglês</option>
-                <option value="oficina3">Educação Ambiental</option>
-                <option value="oficina4">Inclusão Digital</option>
-                <option value="oficina5">Pequeninos</option>
-                <option value="oficina6">Mundo Digital</option>
-                <option value="oficina7">Projeto de vida</option>
+                <option value="1">Informática</option>
+                <option value="2">Clubinho de Inglês</option>
+                <option value="3">Educação Ambiental</option>
+                <option value="4">Inclusão Digital</option>
+                <option value="5">Pequeninos</option>
+                <option value="6">Mundo Digital</option>
+                <option value="7">Projeto de vida</option>
             </select>
             <small id="course-error" class="error-message">Selecione uma oficina.</small>
 
