@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vó Ambrozina - Oficinas</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('imagens/Imagem do WhatsApp de 2024-10-26 à(s) 21.07.30_a8fd463e.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #050505;
+        }
+
+        .form-container {
+            background-color: rgba(255, 165, 0, 0.85);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+            color: #000000;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #0e0d0d;
+            font-size: 1.5rem;
+        }
+
+        .form-container label {
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 700;
+            color: #050505;
+            font-size: 1rem;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #414141;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .form-container input::placeholder,
+        .form-container textarea::placeholder {
+            font-size: 0.95rem;
+            color: #808080;
+        }
+
+        .form-container input:focus,
+        .form-container select:focus,
+        .form-container textarea:focus {
+            border-color: #080808;
+            outline: none;
+        }
+
+        .form-container input.error,
+        .form-container select.error,
+        .form-container textarea.error {
+            border-color: red;
+        }
+
+        .form-container .error-message {
+            color: red;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.25rem;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .form-container button:hover {
+            background-color: #ff8c1a;
+            transform: scale(1.05);
+        }
+
+        .form-container .form-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-container .form-group div {
+            width: 48%;
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 15px;
+            }
+
+            .form-container h2 {
+                font-size: 1.25rem;
+            }
+
+            .form-container input,
+            .form-container select,
+            .form-container textarea {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .form-container button {
+                padding: 10px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Formulário de inscrição para oficinas</h2>
+        <form id="registration-form" action="/submit_course_registration" method="post">
+            <label for="name">Nome Completo</label>
+            <input type="text" id="name" name="name" required placeholder="Digite seu nome completo">
+            <small id="name-error" class="error-message">Nome é obrigatório.</small>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Digite seu email">
+            <small id="email-error" class="error-message">Por favor, insira um e-mail válido.</small>
+
+            <label for="phone">Telefone</label>
+            <input type="tel" id="phone" name="phone" placeholder="(XX) XXXXX-XXXX">
+            <small id="phone-error" class="error-message">Telefone deve seguir o formato (XX) XXXXX-XXXX.</small>
+
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" name="cep" required placeholder="00000-000" onblur="buscarEndereco()">
+            <small id="cep-error" class="error-message">CEP deve ter 8 dígitos.</small>
+
+            <label for="rua">Rua</label>
+            <input type="text" id="rua" name="rua" readonly>
+
+            <div class="form-group">
+                <div>
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" name="numero" required placeholder="Número">
+                    <small id="numero-error" class="error-message">Número é obrigatório.</small>
+                </div>
+                <div>
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" name="cidade" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <label for="estado">Estado</label>
+                    <input type="text" id="estado" name="estado" readonly>
+                </div>
+                <div>
+                    <label for="pais">País</label>
+                    <input type="text" id="pais" name="pais" value="Brasil" readonly>
+                </div>
+            </div>
+
+            <label for="course">Oficina:</label>
+            <select id="course" name="course" required>
+                <option value="" disabled selected>Selecione uma oficina</option>
+                <option value="oficina1">Informática</option>
+                <option value="oficina2">Clubinho de Inglês</option>
+                <option value="oficina3">Educação Ambiental</option>
+                <option value="oficina4">Inclusão Digital</option>
+                <option value="oficina5">Pequeninos</option>
+                <option value="oficina6">Mundo Digital</option>
+                <option value="oficina7">Projeto de vida</option>
+            </select>
+            <small id="course-error" class="error-message">Selecione uma oficina.</small>
+
+            <label for="message">Mensagem (Opcional)</label>
+            <textarea id="message" name="message" rows="4" placeholder="Escreva sua mensagem aqui"></textarea>
+
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registration-form');
+
+            // Funções de validação
+            function validateEmail(input) {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const isValid = emailPattern.test(input.value);
+                const errorMessage = document.getElementById('email-error');
+                if (isValid) {
+                    input.classList.remove('error');
+                    errorMessage.style.display = 'none';
+                } else {
+                    input.classList.add('error');
+                    errorMessage.style.display = 'block';
+                }
+            }
+
+            function validatePhone(input) {
+                const phonePattern = /^\(\d{2}\) \d{5}-\d{4}$/;
+                const isValid = phonePattern.test(input.value);
+                const errorMessage = document.getElementById('phone-error');
+                if (isValid) {
+                    input.classList.remove('error');
+                    errorMessage.style.display = 'none';
+                } else {
+                    input.classList.add('error');
+                    errorMessage.style.display = 'block';
+                }
+            }
+
+            function validateCEP(input) {
+                const isValid = input.value.replace(/\D/g, '').length === 8;
+                const errorMessage = document.getElementById('cep-error');
+                if (isValid) {
+                    input.classList.remove('error');
+                    errorMessage.style.display = 'none';
+                } else {
+                    input.classList.add('error');
+                    errorMessage.style.display = 'block';
+                }
+            }
+
+            function validateNumero(input) {
+                const isValid = input.value.trim() !== '';
+                const errorMessage = document.getElementById('numero-error');
+                if (isValid) {
+                    input.classList.remove('error');
+                    errorMessage.style.display = 'none';
+                } else {
+                    input.classList.add('error');
+                    errorMessage.style.display = 'block';
+                }
+            }
+
+            function validateCourse(select) {
+                const isValid = select.value !== '';
+                const errorMessage = document.getElementById('course-error');
+                if (isValid) {
+                    select.classList.remove('error');
+                    errorMessage.style.display = 'none';
+                } else {
+                    select.classList.add('error');
+                    errorMessage.style.display = 'block';
+                }
+            }
+
+            // Adiciona eventos de validação em tempo real
+            document.getElementById('email').addEventListener('input', function() {
+                validateEmail(this);
+            });
+
+            document.getElementById('phone').addEventListener('input', function() {
+                validatePhone(this);
+            });
+
+            document.getElementById('cep').addEventListener('blur', function() {
+                validateCEP(this);
+                buscarEndereco(); // Chama a função de buscar endereço
+            });
+
+            document.getElementById('numero').addEventListener('input', function() {
+                validateNumero(this);
+            });
+
+            document.getElementById('course').addEventListener('change', function() {
+                validateCourse(this);
+            });
+
+            form.addEventListener('submit', function(event) {
+                validateEmail(document.getElementById('email'));
+                validatePhone(document.getElementById('phone'));
+                validateCEP(document.getElementById('cep'));
+                validateNumero(document.getElementById('numero'));
+                validateCourse(document.getElementById('course'));
+
+                const isFormValid = !document.querySelectorAll('.error').length;
+                if (!isFormValid) {
+                    event.preventDefault(); // Impede o envio do formulário se houver erros
+                }
+            });
+        });
+
+        function buscarEndereco() {
+            const cep = document.getElementById('cep').value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('rua').value = data.logradouro;
+                            document.getElementById('cidade').value = data.localidade;
+                            document.getElementById('estado').value = data.uf;
+                            document.getElementById('pais').value = 'Brasil';
+                        } else {
+                            alert('CEP não encontrado!');
+                        }
+                    })
+                    .catch(error => {
+                        alert('Erro ao buscar o endereço. Tente novamente mais tarde.');
+                        console.error('Erro ao buscar o endereço:', error);
+                    });
+            } else {
+                alert('Por favor, insira um CEP válido com 8 dígitos.');
+            }
+        }
+    </script>
+</body>
+</html>
