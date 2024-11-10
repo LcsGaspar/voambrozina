@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash
 import mysql.connector
 
 app = Flask(__name__)
+app.secret_key = 'dados_secretos_dados_secretos_dados_secretos_dados_secretos'
 
 # Página inicial
 @app.route('/')
@@ -63,12 +64,19 @@ def submit_course_registration():
         cursor.execute(query, values)
         db.commit()
 
-        return redirect(url_for('home', success="Inscrição realizada com sucesso!"))
+        flash("Inscrição realizada com sucesso!")
+        return redirect(url_for('home'))
+
+        # return redirect(url_for('home', success="Inscrição realizada com sucesso!"))
 
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
-        mensagem = jsonify({"message": "Erro ao realizar inscrição."}), 500
-        return '', 204
+
+        flash("Erro ao realizar inscrição.", "error")
+        return redirect(url_for('home'))
+
+        #mensagem = jsonify({"message": "Erro ao realizar inscrição."}), 500
+        # return '', 204
 
     finally:
         if cursor:
