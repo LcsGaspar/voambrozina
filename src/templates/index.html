@@ -194,11 +194,19 @@
         <a href="#" onclick="abrirAabaDoação()">Doação</a>
         <a href="#" onclick="abrirRelatorio()">Relatórios</a>
     </nav>
-{% if success %}
-    <center>
-        <div class="alert alert-success" style="color: #00FF00" >{{ success }}</div>
-    </center>
-{% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div>
+          {% for category, message in messages %}
+            <center>
+            <div class="alert alert-{{ category }}" style="color:#00FF00; padding: 10px" >{{ message }}</div>
+            </center>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
     <div class="banner">
         <img id="bannerImage" src="./static/imagens/foto.png" alt="Imagem principal">
         <button class="prev" onclick="changeImage(-1)">&#10094;</button>
@@ -208,27 +216,23 @@
     <div class="container">
         <section id="sobre" class="about">
             <h2 class="section-title">Quem Somos</h2>
-            <p>
-                Sobre nós: Existia na Cidade de Caieiras uma senhora benevolente cujo nome é Ambrosina do Carmo Buonaguide, que realizava diversas ações solidárias para a comunidade. Ambrosina ajudou inúmeros munícipes que trabalhavam na empresa local chamada Melhoramentos e, doou terras para muitos cidadãos caieirenses, inclusive para a Paróquia Santo Antônio, onde o santo se tornou padroeiro da cidade. Essa senhora com toda a sua trajetória brilhante, inspirou os fundadores da Instituição e por isso a Fundação adotou o nome de Vó Ambrozina.
-                As atividades da Fundação Vó Ambrozina se iniciaram em março de 1997 com o “Projeto Sol” através de ações solidárias. Para efetivação dos ideais e objetivos dos fundadores da instituição, a Fundação Vó Ambrozina foi legalizada em 11 de agosto de 1998 e decretada como Utilidade Pública Municipal em março de 1999.
-                A atuação iniciou identificando as dificuldades e necessidades sociais encontradas em famílias de alguns bairros do município de Caieiras, bem como: vulnerabilidade social, baixa renda familiar, trabalho informal, desemprego, condições precárias de saneamento básico, higiene e saúde, número acentuado de analfabetismo, alcoolismo, prostituição infantil, abusos sexuais em famílias e uso de drogas; a identificação de tais necessidades incentivou a instituição a estruturar as ações propostas para a comunidade.
-            </p>
+            <p>Existia na Cidade de Caieiras uma senhora benevolente cujo nome é Ambrosina do Carmo Buonaguide, que realizava diversas ações solidárias para a comunidade. Ambrosina ajudou inúmeros munícipes que trabalhavam na empresa local chamada Melhoramentos e doou terras para muitos cidadãos caieirenses, inclusive para a Paróquia Santo Antônio, onde o santo se tornou padroeiro da cidade.</p>
+            <p>Essa senhora com toda a sua trajetória brilhante, inspirou os fundadores da Instituição e por isso a Fundação adotou o nome de Vó Ambrozina.</p>
+            <p>As atividades da Fundação Vó Ambrozina se iniciaram em março de 1997 com o “Projeto Sol” através de ações solidárias. Para efetivação dos ideais e objetivos dos fundadores da instituição, a Fundação Vó Ambrozina foi legalizada em 11 de agosto de 1998 e decretada como Utilidade Pública Municipal em março de 1999.</p>
+            <p>A atuação iniciou identificando as dificuldades e necessidades sociais encontradas em famílias de alguns bairros do município de Caieiras, bem como: vulnerabilidade social, baixa renda familiar, trabalho informal, desemprego, condições precárias de saneamento básico, higiene e saúde, número acentuado de analfabetismo, alcoolismo, prostituição infantil, abusos sexuais em famílias e uso de drogas; a identificação de tais necessidades incentivou a instituição a estruturar as ações propostas para a comunidade.</p>
         </section>
 
         <section id="missao" class="projects">
             <h2 class="section-title">Nossa Missão</h2>
-            <p>
-                A Fundação Vó Ambrozina é uma entidade não governamental de caráter social, que tem como missão oferecer aos atendidos um espaço de proteção aos riscos sociais, de fortalecimento de vínculos bem como criar oportunidades para seu desenvolvimento físico, mental, cultural, profissional e principalmente social oferecendo atividades direcionadas à população.
-            </p>
+            <p>A Fundação Vó Ambrozina é uma entidade não governamental de caráter social, que tem como missão oferecer aos atendidos um espaço de proteção aos riscos sociais, de fortalecimento de vínculos bem como criar oportunidades para seu desenvolvimento físico, mental, cultural, profissional e principalmente social oferecendo atividades direcionadas à população.</p>
         </section>
 
         <section id="contato" class="contact">
             <h2 class="section-title">Entre em Contato</h2>
-            <p>
-                Quer saber mais sobre nossos projetos ou colaborar com nossa causa? Entre em contato conosco pelo<br>
-                <strong>Email:</strong> setorcomunicacaovoambrozina@gmail.com<br>
-                <strong>Telefone:</strong> (11) 4445-5303
-            </p>
+            <p>Quer saber mais sobre nossos projetos ou colaborar com nossa causa? Entre em contato conosco pelo</p>
+            <p><strong>Email:</strong> setorcomunicacaovoambrozina@gmail.com</p>
+            <p><strong>Telefone:</strong> (11) 4445-5303</p>
+
             <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3663.471738144755!2d-46.758581625431226!3d-23.334917953310693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cee3f04c99b217%3A0xd4c7fa30b07072d2!2sR.%20Luzia%20Rizzo%20Pesente%2C%20309%20-%20Vila%20dos%20Pinheiros%2C%20Caieiras%20-%20SP%2C%2007718-055!5e0!3m2!1spt-BR!2sbr!4v1731186416971!5m2!1spt-BR!2sbr"
                  width="400" height="250" style="border:0;"
