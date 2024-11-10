@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vó Ambrozina - Instituição de Caridade</title>
+    <meta name="description" content="A Fundação Vó Ambrozina oferece apoio social e promove o desenvolvimento social em Caieiras.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background-color: #ff7b00;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        header img {
+            max-width: 300px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: white;
+            margin: 10px 0;
+        }
+
+        /* NavBar */
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: #fff;
+            font-weight: bold;
+            margin: 0 15px;
+            text-decoration: none;
+            padding: 8px 15px;
+        }
+
+        nav a:hover {
+            background-color: #ff7b00;
+            border-radius: 5px;
+        }
+
+        /* Banner */
+        .banner-section {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .banner-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .banner-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .banner-slide.active {
+            opacity: 1;
+        }
+        
+        .banner-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .banner-content {
+            color: white;
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+            z-index: 2;
+        }
+        
+        .banner-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-description {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #ff7b00;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .banner-button:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+        
+        .banner-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 3;
+        }
+        
+        .banner-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .banner-dot.active {
+            background-color: #ff7b00;
+            transform: scale(1.2);
+        }
+        
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+        
+        .banner-arrow:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .banner-arrow.prev {
+            left: 20px;
+        }
+        
+        .banner-arrow.next {
+            right: 20px;
+        }
+        
+        .banner-arrow i {
+            color: white;
+            font-size: 24px;
+        }
+        
+        @media (max-width: 768px) {
+            .banner-section {
+                height: 400px;
+            }
+            
+            .banner-title {
+                font-size: 2rem;
+            }
+            
+            .banner-description {
+                font-size: 1rem;
+            }
+        }
+
+        /* Seções */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #ff7b00;
+            margin-bottom: 20px;
+        }
+
+        section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        section p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        /* Quem somos, etc */
+        .about-section, .mission-section {
+            padding: 4rem 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            color: #ff7b00;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #ff7b00;
+        }
+        
+        .content-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .history-block {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #fff;
+            border-left: 4px solid #ff7b00;
+            transition: transform 0.3s ease;
+        }
+        
+        .history-block:hover {
+            transform: translateX(10px);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .timeline-item::before {
+            content: '•';
+            color: #ff7b00;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+        
+        .mission-content {
+            background: linear-gradient(to right, #fff, #fff8f0);
+            padding: 2rem;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+        
+        .highlight-text {
+            color: #ff7b00;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .about-section, .mission-section {
+                padding: 2rem 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .history-block {
+                padding: 1rem;
+            }
+        }
+
+        /* Contato e Redes Sociais */
+        .contact-section {
+            padding: 4rem 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .contact-info {
+            padding: 1rem;
+        }
+        
+        .contact-info h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .contact-details {
+            margin: 2rem 0;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        
+        .contact-item i {
+            color: #ff7b00;
+            font-size: 1.5rem;
+            width: 30px;
+        }
+        
+        .contact-item div {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .contact-item span {
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .contact-item a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-item a:hover {
+            color: #ff7b00;
+        }
+        
+        .social-media {
+            margin-top: 2rem;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icon {
+            color: #ff7b00;
+            font-size: 1.8rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            color: #e67e22;
+            transform: translateY(-3px);
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 100%;
+            min-height: 450px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                min-height: 300px;
+            }
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        footer p { margin: 0; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="./static/imagens/logo.png" alt="Logo da Fundação Vó Ambrozina">
+        <h1>Vó Ambrozina</h1>
+    </header>
+
+    <nav>
+        <a href="#sobre">Quem Somos</a>
+        <a href="#missao">Nossa Missão</a>
+        <a href="#" onclick="abrirAbaInscricao()">Inscrições para oficinas</a>
+        <a href="#contato">Contato</a>
+        <a href="#" onclick="abrirAabaDoação()">Doação</a>
+        <a href="#" onclick="abrirRelatorio()">Relatórios</a>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div>
+          {% for category, message in messages %}
+            <center>
+            <div class="alert alert-{{ category }}" style="color:#00FF00; padding: 10px" >{{ message }}</div>
+            </center>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="banner-section">
+        <div class="banner-container">
+            <div class="banner-slide active">
+                <img src="./static/imagens/foto.png" alt="Atividades na Fundação" class="banner-image">
+                <div class="banner-overlay">
+                    <div class="banner-content">
+                        <h2 class="banner-title">Transformando Vidas</h2>
+                        <p class="banner-description">Há mais de 25 anos promovendo ações sociais em Caieiras</p>
+                        <a href="#sobre" class="banner-button">Conheça Nossa História</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="banner-slide">
+                <img src="./static/imagens/logo.png" alt="Atividades na Fundação" class="banner-image">
+                <div class="banner-overlay">
+                    <div class="banner-content">
+                        <h2 class="banner-title">Transformando Vidas</h2>
+                        <p class="banner-description">Há mais de 25 anos promovendo ações sociais em Caieiras</p>
+                        <a href="#sobre" class="banner-button">Conheça Nossa História</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Repita para outras imagens -->
+        </div>
+        
+        <div class="banner-arrow prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        
+        <div class="banner-arrow next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        
+        <div class="banner-nav">
+            <div class="banner-dot active" onclick="goToSlide(0)"></div>
+            <div class="banner-dot" onclick="goToSlide(1)"></div>
+            <div class="banner-dot" onclick="goToSlide(2)"></div>
+            <div class="banner-dot" onclick="goToSlide(3)"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <section id="sobre" class="about-section">
+            <div class="section-header">
+                <h2 class="section-title">Quem Somos</h2>
+            </div>
+            
+            <div class="content-container">
+                <div class="history-block">
+                    <p class="timeline-item">
+                        Existia na Cidade de Caieiras uma senhora benevolente cujo nome é <span class="highlight-text">Ambrosina do Carmo Buonaguide</span>, que realizava diversas ações solidárias para a comunidade. Ambrosina ajudou inúmeros munícipes que trabalhavam na empresa local chamada Melhoramentos e doou terras para muitos cidadãos caieirenses, inclusive para a Paróquia Santo Antônio, onde o santo se tornou padroeiro da cidade.
+                    </p>
+                </div>
+        
+                <div class="history-block">
+                    <p class="timeline-item">
+                        Essa senhora com toda a sua trajetória brilhante, inspirou os fundadores da Instituição e por isso a Fundação adotou o nome de Vó Ambrozina.
+                    </p>
+                </div>
+        
+                <div class="history-block">
+                    <p class="timeline-item">
+                        As atividades da Fundação Vó Ambrozina se iniciaram em março de 1997 com o "Projeto Sol" através de ações solidárias. Para efetivação dos ideais e objetivos dos fundadores da instituição, a Fundação Vó Ambrozina foi legalizada em 11 de agosto de 1998 e decretada como Utilidade Pública Municipal em março de 1999.
+                    </p>
+                </div>
+        
+                <div class="history-block">
+                    <p class="timeline-item">
+                        A atuação iniciou identificando as dificuldades e necessidades sociais encontradas em famílias de alguns bairros do município de Caieiras, incluindo:
+                    </p>
+                    <ul class="needs-list">
+                        <li>Vulnerabilidade social</li>
+                        <li>Baixa renda familiar</li>
+                        <li>Trabalho informal</li>
+                        <li>Desemprego</li>
+                        <li>Condições precárias de saneamento básico</li>
+                        <li>Higiene e saúde</li>
+                        <li>Número acentuado de analfabetismo</li>
+                    </ul>
+                    <p>A identificação de tais necessidades incentivou a instituição a estruturar as ações propostas para a comunidade.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="missao" class="mission-section">
+            <div class="section-header">
+                <h2 class="section-title">Nossa Missão</h2>
+            </div>
+            
+            <div class="content-container">
+                <div class="mission-content">
+                    <p>
+                        A Fundação Vó Ambrozina é uma entidade não governamental de caráter social, que tem como missão oferecer aos atendidos:
+                    </p>
+                    <ul>
+                        <li>Um espaço de proteção aos riscos sociais</li>
+                        <li>Fortalecimento de vínculos</li>
+                        <li>Oportunidades para desenvolvimento:
+                            <ul>
+                                <li>Físico</li>
+                                <li>Mental</li>
+                                <li>Cultural</li>
+                                <li>Profissional</li>
+                                <li>Social</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>
+                        Oferecemos atividades direcionadas à população, visando criar um impacto positivo e duradouro em nossa comunidade.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="contact-section">
+            <div class="section-header">
+                <h2 class="section-title">Entre em Contato</h2>
+            </div>
+
+            <div class="contact-container">
+                <!-- Informações de Contato -->
+                <div class="contact-info">
+                    <h3>Quer saber mais sobre nossos projetos ou colaborar com nossa causa?</h3>
+                    <p>Entre em contato conosco!</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <span>Email:</span>
+                                <a href="mailto:setorcomunicacaovoambrozina@gmail.com">setorcomunicacaovoambrozina@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <span>Telefone:</span>
+                                <a href="tel:+551144455303">(11) 4445-5303</a>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Redes Sociais -->
+                    <div class="social-media">
+                        <h3>Siga-nos nas Redes Sociais</h3>
+                        <div class="social-icons">
+                            <a href="https://www.instagram.com/voambrozina/" target="_blank" class="social-icon">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.facebook.com/FundacaoVoAmbrozina" target="_blank" class="social-icon">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://api.whatsapp.com/send?phone=5511956533665" target="_blank" class="social-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Mapa -->
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3663.471738144755!2d-46.758581625431226!3d-23.334917953310693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cee3f04c99b217%3A0xd4c7fa30b07072d2!2sR.%20Luzia%20Rizzo%20Pesente%2C%20309%20-%20Vila%20dos%20Pinheiros%2C%20Caieiras%20-%20SP%2C%2007718-055!5e0!3m2!1spt-BR!2sbr!4v1731186416971!5m2!1spt-BR!2sbr"
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Fundação Vó Ambrozina. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        /*
+        let currentImageIndex = 0;
+        const images = [
+            './static/imagens/foto.png',
+            './static/imagens/logo.png',
+            './static/imagens/foto.png',
+            './static/imagens/logo.png'];
+        setInterval(() => changeImage(1), 4000);  // Troca de imagem a cada 4 segundos
+        */
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const dots = document.querySelectorAll('.banner-dot');
+        const totalSlides = slides.length;
+        
+        function updateSlides() {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            updateSlides();
+        }
+        
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlides();
+        }
+        
+        // Autoplay
+        setInterval(() => changeSlide(1), 5000);
+        
+        // Pausa o autoplay quando o mouse está sobre o banner
+        const banner = document.querySelector('.banner-section');
+        let autoplayInterval;
+        
+        banner.addEventListener('mouseenter', () => {
+            clearInterval(autoplayInterval);
+        });
+        
+        banner.addEventListener('mouseleave', () => {
+            autoplayInterval = setInterval(() => changeSlide(1), 5000);
+        });
+        
+        // Iniciar o autoplay
+        autoplayInterval = setInterval(() => changeSlide(1), 5000);
+
+        function abrirAbaInscricao() {
+            window.open("/formulario", "_blank");
+        }
+
+        function abrirAabaDoação() {
+            window.open("https://www.kickante.com.br/vaquinha-online/campanha-da-vovo", "_blank");
+        }
+
+        function abrirRelatorio() {
+            window.open("/static/relatorios/Relatorio_Vo_Ambrozina.pdf", "_blank");
+        }
+    </script>
+</body>
+</html>

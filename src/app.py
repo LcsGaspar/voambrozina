@@ -11,6 +11,11 @@ def home():
     success_message = request.args.get('success')
     return render_template('index.html', success=success_message)
 
+@app.route('/alternativo')
+def home_alternativo():
+    success_message = request.args.get('success')
+    return render_template('index_alternativo.html', success=success_message)
+
 @app.route('/formulario_antigo')
 def formulario():
     return render_template('formulario.html')
