@@ -81,18 +81,13 @@ def submit_course_registration():
         db.commit()
 
         flash("Inscrição realizada com sucesso!")
-        return redirect(url_for('home'))
-
-        # return redirect(url_for('home', success="Inscrição realizada com sucesso!"))
+        return '', 204
 
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
 
         flash("Erro ao realizar inscrição.", "error")
-        return redirect(url_for('home'))
-
-        #mensagem = jsonify({"message": "Erro ao realizar inscrição."}), 500
-        # return '', 204
+        return '', 204
 
     finally:
         if cursor:
@@ -141,12 +136,12 @@ def delete_pdf(filename):
 def listar_pdfs():
     # Coleta todos os arquivos PDF do diretório
     caminho = app.config['UPLOAD_FOLDER']
-    
+
     # Verifica se o diretório existe
     if not os.path.exists(caminho) or not os.path.isdir(caminho):
         # Se o diretório não existir, você pode retornar um erro 404 ou uma mensagem apropriada
         abort(404)  # ou você pode retornar um render_template com uma mensagem de erro
-    
+
     arquivos = [f for f in os.listdir(caminho) if f.endswith('.pdf')]  # Lista apenas arquivos PDF
     return render_template('listar_pdfs.html', arquivos=arquivos)
 
@@ -208,7 +203,6 @@ def logout():
     flash('Logout realizado com sucesso!', 'success')
     return redirect(url_for('login'))
 
-
 # Função para verificar e criar o usuário padrão
 def create_default_user():
     db = mysql.connector.connect(**DB_CONFIG)
@@ -226,7 +220,7 @@ def create_default_user():
             # Criação do usuário padrão com email e senha
             cursor.execute(
                 "INSERT INTO usuarios (email, senha) VALUES (%s, %s)",
-                ("dados_secretos_dados_secretos_dados_secretos", default_password)
+                ("dados_secretos_dados_secretos_dados_secretos@exemplo.com", default_password)
             )
             db.commit()
             print("Usuário padrão criado com sucesso.")

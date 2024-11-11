@@ -12,18 +12,6 @@
         <a href="/listar_pdfs">Relatórios</a>
     </nav>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div>
-          {% for category, message in messages %}
-            <center>
-            <div class="alert alert-{{ category }}" style="color:#00FF00; padding: 10px" >{{ message }}</div>
-            </center>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
-
     <div class="banner-section">
         <div class="banner-container">
             <div class="banner-slide active">

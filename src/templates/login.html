@@ -99,18 +99,6 @@
         <img src="/static/imagens/logo.png" alt="Logo Fundação" class="logo">
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div>
-          {% for category, message in messages %}
-            <center>
-            <div class="alert alert-{{ category }}" style="color:#00FF00; padding: 10px" >{{ message }}</div>
-            </center>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
-
     <div class="login-container">
         <h1>Área de Acesso</h1>
         <form method="post">

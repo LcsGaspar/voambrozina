@@ -13,3 +13,10 @@ CREATE table inscricoes(
 	mensagem TEXT,
 	PRIMARY KEY (id_inscricao)
 );
+
+create table usuarios(
+	id INT AUTO_INCREMENT,
+	email VARCHAR(50),
+	senha VARCHAR(300),
+	PRIMARY KEY(id)
+);
