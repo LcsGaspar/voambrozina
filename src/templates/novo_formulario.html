@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+
+{% block title %}Inscrição - Fundação Vó Ambrozina{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9f5ff; /* Cor de fundo suave */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #ff7b00;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .logo {
+            max-width: 150px; /* Ajuste o tamanho do logo conforme necessário */
+            margin: 10px auto;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h2 {
+            color: #ff7b00;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #ff7b00;
+            box-shadow: 0 0 5px rgba(255, 123, 0, 0.5);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            background-color: #ff7b00;
+            color: white;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        /* Adicionando um efeito de sombra ao botão e aos campos */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        textarea,
+        select,
+        button {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilizando as mensagens de feedback */
+        .feedback {
+            color: #ff0000; /* Cor vermelha para mensagens de erro */
+            margin-top: -15px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        /* Estilizando a linha de campos */
+        .field-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px; /* Espaço entre os campos */
+        }
+
+        .social-icons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            color: #ff7b00;
+            font-size: 1.5em;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #e67e22;
+        }
+    </style>
+    <script>
+
+       function validatePhone(input) {
+                const phonePattern = /^\d{10,11}$/;
+                const isValid = phonePattern.test(input.value);
+                const errorMessage = document.getElementById('phone-error');
+                if (isValid) {
+                    input.classList.remove('error');
+                    errorMessage.style.display = 'none';
+                } else {
+                    input.classList.add('error');
+                    errorMessage.style.display = 'block';
+                }
+            }
+
+        function validateCourse(select) {
+            const isValid = select.value !== '';
+            const errorMessage = document.getElementById('course-error');
+            if (isValid) {
+                select.classList.remove('error');
+                errorMessage.style.display = 'none';
+            } else {
+                select.classList.add('error');
+                errorMessage.style.display = 'block';
+            }
+        }
+
+       async function buscarEndereco(cep) {
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await response.json();
+
+                if (data.erro) {
+                    alert("CEP não encontrado.");
+                    return;
+                }
+
+                document.getElementById("rua").value = data.logradouro;
+                document.getElementById("cidade").value = data.localidade;
+                document.getElementById("estado").value = data.uf;
+            } catch (error) {
+                alert("Erro ao buscar endereço.");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const cepInput = document.getElementById("cep");
+            cepInput.addEventListener("blur", function () {
+                const cep = cepInput.value.replace(/\D/g, ""); // Remove caracteres não numéricos
+                if (cep.length === 8) {
+                    buscarEndereco(cep);
+                } else {
+                    alert("Digite um CEP válido com 8 dígitos.");
+                }
+            });
+
+            const telefoneInput = document.getElementById("telefone");
+            telefoneInput.addEventListener("blur", function () {
+                const telefone = telefoneInput.value.replace(/\D/g, ""); // Remove caracteres não numéricos
+                if (telefone.length === 10 || telefone.length === 11) {
+                    validatePhone(telefone);
+                } else {
+                    alert("Digite um Telefone ou Celular valido.");
+                }
+            });
+        });
+
+        document.getElementById("registration-form").addEventListener("submit",
+        function(event) {
+            const courseSelect = document.getElementById("course");
+            const errorMessage = document.getElementById("course-error");
+            if (courseSelect.value === "")
+            {
+                errorMessage.style.display = "block";  // Exibe a mensagem de erro
+                event.preventDefault();  // Impede o envio do formulário
+            }
+            else {
+                errorMessage.style.display = "none"; // Oculta a mensagem de erro
+                }
+        });
+    </script>
+    <nav>
+        <a href="/home">Página Inicial</a>
+    </nav>
+
+    <div class="container">
+        <h2>Inscrição para Oficinas</h2>
+        <form id="registration-form" action="/submit_course_registration" method="post">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+            <div class="feedback" id="feedback-nome"></div>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" required>
+            <div class="feedback" id="feedback-email"></div>
+
+            <label for="telefone">Telefone</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="(11) 91234-5678" required>
+            <div class="feedback" id="feedback-telefone"></div>
+
+            <label for="data_nascimento">Data de Nascimento</label>
+            <input type="date" id="data_nascimento" name="data_nascimento" required>
+            <div class="feedback" id="feedback-data_nascimento"></div>
+
+            <label for="course">Oficina:</label>
+            <select id="course" name="course" required>
+                <option value="" disabled selected>Selecione uma oficina</option>
+                <option value="1">Informática</option>
+                <option value="2">Clubinho de Inglês</option>
+                <option value="3">Educação Ambiental</option>
+                <option value="4">Inclusão Digital</option>
+                <option value="5">Pequeninos</option>
+                <option value="6">Mundo Digital</option>
+                <option value="7">Projeto de vida</option>
+            </select>
+            <small id="course-error" class="feedback" style="display:none">Selecione uma oficina.</small>
+
+            <!-- Campos de endereço -->
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" name="cep" placeholder="Digite seu CEP" required>
+            <div class="feedback" id="feedback-cep"></div>
+
+            <label>Endereço</label>
+            <div class="field-group">
+                <input type="text" id="rua" name="rua" placeholder="Rua" required>
+                <input type="text" id="numero" name="numero" placeholder="Número" required>
+            </div>
+            <div class="feedback" id="feedback-rua"></div>
+            <div class="feedback" id="feedback-numero"></div>
+
+            <div class="field-group">
+                <input type="text" id="cidade" name="cidade" placeholder="Cidade" required>
+                <input type="text" id="estado" name="estado" placeholder="Estado" required>
+            </div>
+            <div class="feedback" id="feedback-cidade"></div>
+            <div class="feedback" id="feedback-estado"></div>
+
+            <label for="observacoes">Observações</label>
+            <textarea id="observacoes" name="observacoes" placeholder="Observações adicionais (opcional)" rows="4"></textarea>
+            <div class="feedback" id="feedback-observacoes"></div>
+
+            <button type="submit">Enviar Inscrição</button>
+        </form>
+    </div>
+
+    <!-- Modal -->
+    <div id="confirmationModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Inscrição enviada com sucesso!</p>
+            <button onclick="concluir()">Concluir</button>
+            <button onclick="novaInscricao()">Fazer nova inscrição</button>
+        </div>
+    </div>
+
+    <style>
+        /* Estilos do Modal */
+        .modal {
+            display: none; /* Oculta o modal por padrão */
+            position: fixed; /* Fica fixo na tela */
+            z-index: 1; /* Fica acima de outros elementos */
+            left: 0;
+            top: 0;
+            width: 100%; /* Largura total */
+            height: 100%; /* Altura total */
+            overflow: auto; /* Adiciona rolagem se necessário */
+            background-color: rgba(0,0,0,0.4); /* Fundo escuro com opacidade */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* Centraliza o modal */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Largura do modal */
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        function showModal() {
+            document.getElementById("confirmationModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("confirmationModal").style.display = "none";
+        }
+
+        function concluir() {
+            window.location.href = "/home"; // Redireciona para a página inicial
+        }
+
+        function novaInscricao() {
+            closeModal(); // Fecha o modal
+            document.getElementById("registration-form").reset(); // Limpa o formulário
+        }
+
+        document.getElementById("registration-form").addEventListener("submit", function(event) {
+            // Show the modal when the form is submitted
+            showModal();
+            // The form will continue to submit normally
+        });
+
+    </script>
+{% endblock %}
+

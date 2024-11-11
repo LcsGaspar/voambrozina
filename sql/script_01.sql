@@ -11,5 +11,14 @@ CREATE table inscricoes(
 	estado VARCHAR(2),
 	oficina INTEGER,
 	mensagem TEXT,
+	criado DATETIME,
 	PRIMARY KEY (id_inscricao)
+);
+
+create table usuarios(
+	id INT AUTO_INCREMENT,
+	email VARCHAR(50),
+	senha VARCHAR(300),
+	criado DATETIME,
+	PRIMARY KEY(id)
 );

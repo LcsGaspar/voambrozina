@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vó Ambrozina - Instituição de Caridade</title>
+    <meta name="description" content="A Fundação Vó Ambrozina oferece apoio social, fortalece vínculos comunitários e promove o desenvolvimento social na cidade de Caieiras.">
+    <meta name="keywords" content="caridade, fundação, apoio social, oficinas, Caieiras">
+    <style>
+        /* Estilos aqui permanecem os mesmos */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #ff7b00;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        nav {
+            background-color: #fffdfd;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: #ff7b00;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 20px;
+            padding: 10px;
+            display: block;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav a {
+                margin: 10px 0;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .banner {
+            background: url('https://via.placeholder.com/1200x400') no-repeat center center;
+            background-size: cover;
+            height: 400px;
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner img {
+            width: 100%;
+            height: auto;
+        }
+
+        .intro, .mission {
+            background-color: #ffdab9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .intro h2, .mission h2 {
+            color: #ff7b00;
+            font-size: 2em;
+        }
+
+        .intro p, .mission p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .about, .projects, .contact {
+            margin-bottom: 40px;
+        }
+
+        .map-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #ff7b00;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="./static/imagens/logo.png" alt="Logo da Fundação Vó Ambrozina" style="width:300px; height:300px;">
+        <h1>Vó Ambrozina</h1>
+    </header>
+
+    <nav>
+        <a href="#sobre">Quem Somos</a>
+        <a href="#missao">Nossa Missão</a>
+        <a href="#" onclick="abrirAbaInscricao()">Inscrições para oficinas</a>
+        <a href="#contato">Contato</a>
+        <a href="#" onclick="abrirAabaDoação()">Doação</a>
+        <a href="#" onclick="abrirRelatorio()">Relatórios</a>
+    </nav>
+
+    <div class="banner">
+        <img src="./static/imagens/foto.png" alt="Logo da Fundação Vó Ambrozina" style="width:1400px; height:400px;">
+    </div>
+
+    <div class="container">
+        <section id="sobre" class="about">
+            <h2 class="section-title">Quem Somos</h2>
+            <p>
+                Sobre nós: Existia na Cidade de Caieiras uma senhora benevolente cujo nome é Ambrosina do Carmo Buonaguide, que realizava diversas ações solidárias para a comunidade. Ambrosina ajudou inúmeros munícipes que trabalhavam na empresa local chamada Melhoramentos e, doou terras para muitos cidadãos caieirenses, inclusive para a Paróquia Santo Antônio, onde o santo se tornou padroeiro da cidade. Essa senhora com toda a sua trajetória brilhante, inspirou os fundadores da Instituição e por isso a Fundação adotou o nome de Vó Ambrozina.
+                As atividades da Fundação Vó Ambrozina se iniciaram em março de 1997 com o “Projeto Sol” através de ações solidárias. Para efetivação dos ideais e objetivos dos fundadores da instituição, a Fundação Vó Ambrozina foi legalizada em 11 de agosto de 1998 e decretada como Utilidade Pública Municipal em março de 1999.
+                A atuação iniciou identificando as dificuldades e necessidades sociais encontradas em famílias de alguns bairros do município de Caieiras, bem como: vulnerabilidade social, baixa renda familiar, trabalho informal, desemprego, condições precárias de saneamento básico, higiene e saúde, número acentuado de analfabetismo, alcoolismo, prostituição infantil, abusos sexuais em famílias e uso de drogas; a identificação de tais necessidades incentivou a instituição a estruturar as ações propostas para a comunidade.
+            </p>
+        </section>
+
+        <section id="missao" class="projects">
+            <h2 class="section-title">Nossa Missão</h2>
+            <p>
+                A Fundação Vó Ambrozina é uma entidade não governamental de caráter social, que tem como missão oferecer aos atendidos um espaço de proteção aos riscos sociais, de fortalecimento de vínculos bem como criar oportunidades para seu desenvolvimento físico, mental, cultural, profissional e principalmente social oferecendo atividades direcionadas à população.
+            </p>
+        </section>
+
+        <section id="contato" class="contact">
+            <h2 class="section-title">Entre em Contato</h2>
+            <p>
+                Quer saber mais sobre nossos projetos ou colaborar com nossa causa? Entre em contato conosco pelo<br>
+                <strong>Email:</strong> setorcomunicacaovoambrozina@gmail.com<br>
+                <strong>Telefone:</strong> (11) 4445-5303
+            </p>
+            <div class="map-container">
+                <!--
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.6135083151095!2d-46.74007162327048!3d-23.358792784787294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cee487a314d647%3A0xf311e2d3de7405aa!2sFunda%C3%A7%C3%A3o%20Vo%20Ambrozina!5e0!3m2!1spt-BR!2sbr!4v1697623937292!5m2!1spt-BR!2sbr"
+                    width="400" height="250" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3663.471738144755!2d-46.758581625431226!3d-23.334917953310693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cee3f04c99b217%3A0xd4c7fa30b07072d2!2sR.%20Luzia%20Rizzo%20Pesente%2C%20309%20-%20Vila%20dos%20Pinheiros%2C%20Caieiras%20-%20SP%2C%2007718-055!5e0!3m2!1spt-BR!2sbr!4v1731186416971!5m2!1spt-BR!2sbr"
+                    width="400" height="250" style="border:0;"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <h3>Siga-nos nas Redes Sociais</h3>
+
+            <a href="https://www.instagram.com/voambrozina/" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" width="45" height="46">
+            </a>
+            <a href="https://www.facebook.com/FundacaoVoAmbrozina?locale=pt_BR" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" width="45" height="50">
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=%2B5511956533665&context=ARCpm9SU3H5ELuNp_adI7Tb6Mmh0QABo5AeVkXHeH_QUCWGWC1i3imaeuuNu39Zy6BNAhKLPU0WmmTmNLnSQC68f0z5P5hKAP6bDgIc3Rg7DSBCNa9t44EIEQgkQnqKya6R5mflBvYdSKqBpr7c4LJ9FZ5K_lwxglgxsRZsApGGkZ0wcbY_c2fuBGuwNB83H-MocEoYTiNPyDOY8cMKiQF8QDLQU4Hyw3fj_YNTxz6Tdf3yR6Io4dC7aIQAkQDi_B0OK-_f7z4nQBdI9fYyKmJg3HRcOLlQCAuUsE3t-Qo9h2DE8OXUJIEg6hUN8Rcw_vptDgPfJge9pFz0l_wTlbGAzDa4K4PMK6eEHKmQzTkAXLgL5LV5PTHVtYBLW9i26CMQY_YyLyD7PIwnhZzIMCdZOBGrNJebgJKwY3D-ZxC3rT-3HHeBe9pt_HCMZPYDAkANL0FgE1uOfGJUbKPfyf1L6h7j46CshY_E9N2CftqEYVLNoDiZQQsbwUAB8OQMyw" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="45" height="45">
+            </a>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Fundação Vó Ambrozina. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function abrirAbaInscricao() {
+            window.open("/formulario", "_blank");
+        }
+
+        function abrirAabaDoação() {
+            window.open("https://www.kickante.com.br/vaquinha-online/campanha-da-vovo", "_blank");
+        }
+
+        function abrirRelatorio() {
+            window.open("/static/relatorios/Relatorio_Vo_Ambrozina.pdf", "_blank");
+        }
+    </script>
+</body>
+
+</html>
