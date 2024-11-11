@@ -1,0 +1,10 @@
+{
+    "db_config": {
+        "host": "dados_sigilosos",
+        "user": "dados_sigilosos",
+        "password": "dados_sigilosos",
+        "database": "dados_sigilosos",
+        "port": 3306
+    },
+    "secret_key":"dados_sigilosos"
+}

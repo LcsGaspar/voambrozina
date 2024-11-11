@@ -334,7 +334,11 @@
                     body: formData
                 });
 
-                if (response.ok) {
+                if(response.status === 204)
+                {
+                    showPopup('Nenhum arquivo carregado!', 'info');
+                }
+                else if (response.ok) {
                     showPopup('Upload realizado com sucesso!', 'success');
                     setTimeout(() => {
                         window.location.reload();

@@ -1,29 +1,41 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify, abort
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, abort
 from functools import wraps
 import os
+import json
 import mysql.connector
 import hashlib
 
 app = Flask(__name__)
-app.secret_key = 'dados_secretos_dados_secretos_dados_secretos'
-app.config['UPLOAD_FOLDER'] = './static/relatorios'  # Diretório para salvar PDFs
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+app.config['UPLOAD_FOLDER'] = os.path.join(base_dir, 'static/relatorios')  # Diretório para salvar PDFs
+app.config['CONFIG_FILE'] = os.path.join(base_dir, 'config.json')           # Arquivo de configuração
 app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
 
-# Configuração do banco de dados
-# -------------------------------------------------------------------
-# -------------------------->>> ATENÇÃO <<<--------------------------
-# -------------------------------------------------------------------
-# --------- Editar essas configurações abaixo com os dados ----------
-# ---------------- que serão utilizados em produção! ----------------
-# -------------------------------------------------------------------
+def get_db_config():
+    filepath = app.config['CONFIG_FILE']
+    with open(filepath, 'r') as config_file:
+        config = json.load(config_file)
+        return config["db_config"]
+    
+def get_secret_key():
+    filepath = app.config['CONFIG_FILE']
+    with open(filepath, 'r') as config_file:
+        config = json.load(config_file)
+        return config["secret_key"]
 
-DB_CONFIG = {
-    "host": "dados_secretos_dados_secretos_dados_secretos",
-    "user": "dados_secretos_dados_secretos_dados_secretos",
-    "password": "dados_secretos_dados_secretos_dados_secretos",
-    "database": "dados_secretos_dados_secretos_dados_secretos",
-    "port": 3306
-}
+config = get_db_config()
+app.secret_key = get_secret_key()
+
+def connect_to_database(cfgs):
+    db_config = cfgs
+    return mysql.connector.connect(
+        host=db_config["host"],
+        user=db_config["user"],
+        password=db_config["password"],
+        database=db_config["database"],
+        port=db_config["port"]
+    )
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -51,7 +63,7 @@ def novo_formulario():
 @app.route('/submit_course_registration', methods=['POST'])
 def submit_course_registration():
 
-    db = mysql.connector.connect(**DB_CONFIG)
+    db = connect_to_database(config)
 
     try:
         data = request.form
@@ -72,21 +84,18 @@ def submit_course_registration():
 
         # Inserindo os dados no banco de dados
         query = """
-        INSERT INTO inscricoes (nome, email, telefone, data_nascimento, cep, rua, numero, cidade, estado, oficina, mensagem)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO inscricoes (nome, email, telefone, data_nascimento, cep, rua, numero, cidade, estado, oficina, mensagem, criado)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
         """
         values = (nome, email, telefone, data_nascimento, cep, rua, numero, cidade, estado, oficina, mensagem)
 
         cursor.execute(query, values)
         db.commit()
 
-        flash("Inscrição realizada com sucesso!")
         return '', 204
 
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
-
-        flash("Erro ao realizar inscrição.", "error")
         return '', 204
 
     finally:
@@ -101,18 +110,18 @@ def upload_pdf():
     # Processa o upload se o método for POST
     if request.method == 'POST':
         if 'file' not in request.files:
-            flash('Nenhum arquivo selecionado')
-            return redirect(request.url)
+            #return redirect(request.url)
+            return '', 204
+        
 
         file = request.files['file']
         if file.filename == '':
-            # flash('Nenhum arquivo selecionado')
-            return redirect(request.url)
+            #return redirect(request.url)
+            return '', 204
 
         if file and allowed_file(file.filename):
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # flash('Upload realizado com sucesso')
             return redirect(url_for('upload_pdf'))
 
     # Obtém a lista de arquivos do diretório
@@ -127,9 +136,6 @@ def delete_pdf(filename):
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     if os.path.exists(file_path):
         os.remove(file_path)
-        # flash(f'{filename} excluído com sucesso')
-#    else:
-#        flash('Arquivo não encontrado')
     return redirect(url_for('upload_pdf'))
 
 @app.route('/listar_pdfs')
@@ -152,7 +158,6 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
-            flash('Por favor, faça login para acessar esta página.', 'error')
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
@@ -169,7 +174,7 @@ def login():
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
         try:
-            db = mysql.connector.connect(**DB_CONFIG)
+            db = connect_to_database(config)
             cursor = db.cursor(dictionary=True)
 
             # Verificar credenciais
@@ -180,13 +185,10 @@ def login():
             if user:
                 session['user_id'] = user['id']
                 session['user_email'] = user['email']
-                flash('Login realizado com sucesso!', 'success')
                 return redirect(url_for('usuarios'))
-            else:
-                flash('Email ou senha incorretos.', 'error')
 
         except mysql.connector.Error as err:
-            flash(f'Erro ao realizar login: {err}', 'error')
+            print(f'Erro ao realizar login: {err}')
 
         finally:
             if cursor:
@@ -200,12 +202,11 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('Logout realizado com sucesso!', 'success')
     return redirect(url_for('login'))
 
 # Função para verificar e criar o usuário padrão
 def create_default_user():
-    db = mysql.connector.connect(**DB_CONFIG)
+    db = connect_to_database(config)
     cursor = db.cursor()
 
     try:
@@ -219,20 +220,17 @@ def create_default_user():
 
             # Criação do usuário padrão com email e senha
             cursor.execute(
-                "INSERT INTO usuarios (email, senha) VALUES (%s, %s)",
+                "INSERT INTO usuarios (email, senha, criado) VALUES (%s, %s, CURRENT_TIMESTAMP)",
                 ("dados_secretos_dados_secretos_dados_secretos@exemplo.com", default_password)
             )
             db.commit()
             print("Usuário padrão criado com sucesso.")
-            #flash('Usuário padrão criado com sucesso!', 'success')
 
         else:
             print("Usuários já cadastrados no banco de dados. Nenhuma ação necessária.")
-            #flash('Usuários já cadastrados no banco de dados. Nenhuma ação necessária.', 'error')
 
     except mysql.connector.Error as err:
         print(f"Erro ao criar o usuário padrão: {err}")
-        #flash(f"Erro ao criar o usuário padrão: {err}", 'error')
 
     finally:
         cursor.close()
@@ -247,7 +245,7 @@ def create_default_user():
 @login_required
 def usuarios():
     try:
-        db = mysql.connector.connect(**DB_CONFIG)
+        db = connect_to_database(config)
         cursor = db.cursor(dictionary=True)
 
         # Busca todos os usuários
@@ -257,7 +255,7 @@ def usuarios():
         return render_template('usuarios.html', usuarios=usuarios)
 
     except mysql.connector.Error as err:
-        flash(f'Erro ao carregar usuários: {err}', 'error')
+        print(f'Erro ao carregar usuários: {err}')
         return redirect(url_for('home'))
 
     finally:
@@ -276,7 +274,7 @@ def adicionar_usuario():
         return jsonify({'success': False, 'message': 'Email e senha são obrigatórios'}), 400
 
     try:
-        db = mysql.connector.connect(**DB_CONFIG)
+        db = connect_to_database(config)
         cursor = db.cursor()
 
         # Verifica se o email já existe
@@ -289,7 +287,7 @@ def adicionar_usuario():
 
         # Insere novo usuário
         cursor.execute(
-            "INSERT INTO usuarios (email, senha) VALUES (%s, %s)",
+            "INSERT INTO usuarios (email, senha, criado) VALUES (%s, %s, CURRENT_TIMESTAMP)",
             (email, hashed_password)
         )
         db.commit()
@@ -312,7 +310,7 @@ def excluir_usuario(user_id):
         return jsonify({'success': False, 'message': 'Não é possível excluir o próprio usuário'}), 400
 
     try:
-        db = mysql.connector.connect(**DB_CONFIG)
+        db = connect_to_database(config)
         cursor = db.cursor()
 
         # Exclui o usuário
