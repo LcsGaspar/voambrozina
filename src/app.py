@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify, abort
 from functools import wraps
 import os
 import mysql.connector
@@ -6,7 +6,7 @@ import hashlib
 
 app = Flask(__name__)
 app.secret_key = 'dados_secretos_dados_secretos_dados_secretos'
-app.config['UPLOAD_FOLDER'] = 'static/relatorios'  # Diretório para salvar PDFs
+app.config['UPLOAD_FOLDER'] = './static/relatorios'  # Diretório para salvar PDFs
 app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
 
 # Configuração do banco de dados
@@ -141,6 +141,12 @@ def delete_pdf(filename):
 def listar_pdfs():
     # Coleta todos os arquivos PDF do diretório
     caminho = app.config['UPLOAD_FOLDER']
+    
+    # Verifica se o diretório existe
+    if not os.path.exists(caminho) or not os.path.isdir(caminho):
+        # Se o diretório não existir, você pode retornar um erro 404 ou uma mensagem apropriada
+        abort(404)  # ou você pode retornar um render_template com uma mensagem de erro
+    
     arquivos = [f for f in os.listdir(caminho) if f.endswith('.pdf')]  # Lista apenas arquivos PDF
     return render_template('listar_pdfs.html', arquivos=arquivos)
 
@@ -202,11 +208,6 @@ def logout():
     flash('Logout realizado com sucesso!', 'success')
     return redirect(url_for('login'))
 
-# Rota protegida (exemplo)
-@app.route('/usuarios')
-@login_required
-def usuarios():
-    return render_template('usuarios.html', user_email=session.get('user_email'))
 
 # Função para verificar e criar o usuário padrão
 def create_default_user():
@@ -250,7 +251,7 @@ def create_default_user():
 
 @app.route('/usuarios')
 @login_required
-def gerenciar_usuarios():
+def usuarios():
     try:
         db = mysql.connector.connect(**DB_CONFIG)
         cursor = db.cursor(dictionary=True)
