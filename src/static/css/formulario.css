@@ -1,0 +1,99 @@
+.formulario-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.formulario-container:hover {
+    transform: scale(1.02);
+}
+
+.formulario-titulo {
+    text-align: center;
+    color: #ff7b00;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.formulario-label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+input, select, textarea, button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #ff7b00;
+    box-shadow: 0 0 5px rgba(255, 123, 0, 0.5);
+}
+
+textarea {
+    resize: vertical;
+}
+
+.formulario-botao {
+    background-color: #ff7b00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.formulario-botao:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+}
+
+.formulario-feedback {
+    color: #ff0000;
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.formulario-grupo-campos {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.formulario-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-conteudo {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+}
+
+.modal-fechar {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
