@@ -10,8 +10,30 @@ document.addEventListener("DOMContentLoaded", function () {
         validatePhone(telefoneInput);
     });
 
-    document.getElementById("registration-form").addEventListener("submit", function (event) {
-        validateCourse(document.getElementById("course"), event);
+    document.getElementById("formulario-inscricao").addEventListener("submit", async function (event) {
+        event.preventDefault(); // Previne o envio padrão do formulário
+
+        const courseSelect = document.getElementById("course");
+        if (validateCourse(courseSelect)) {
+            // Aqui você pode enviar o formulário via AJAX ou fazer um fetch
+            const formData = new FormData(this);
+            try {
+                const response = await fetch(this.action, {
+                    method: this.method,
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    // Se a resposta for bem-sucedida, mostre o modal
+                    showModal();
+                } else {
+                    // Caso contrário, exiba uma mensagem de erro
+                    alert("Erro ao enviar a inscrição. Tente novamente.");
+                }
+            } catch (error) {
+                alert("Erro ao enviar a inscrição. Tente novamente.");
+            }
+        }
     });
 });
 
@@ -25,7 +47,9 @@ function validateCourse(select, event) {
     if (select.value === "") {
         document.getElementById("course-error").style.display = "block";
         event.preventDefault();
+        return false;
     }
+    return true;
 }
 
 async function buscarEndereco(cep) {
@@ -44,11 +68,11 @@ async function buscarEndereco(cep) {
 }
 
 function showModal() {
-    document.getElementById("confirmationModal").style.display = "block";
+    document.getElementById("modal-confirmacao").style.display = "block";
 }
 
 function closeModal() {
-    document.getElementById("confirmationModal").style.display = "none";
+    document.getElementById("modal-confirmacao").style.display = "none";
 }
 
 function concluir() {
@@ -57,5 +81,5 @@ function concluir() {
 
 function novaInscricao() {
     closeModal();
-    document.getElementById("registration-form").reset();
+    document.getElementById("formulario-inscricao").reset();
 }
