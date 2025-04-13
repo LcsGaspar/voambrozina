@@ -1,0 +1,78 @@
+/* Seção Sobre e Missão */
+.about-section,
+.mission-section {
+    padding: 4rem 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+/* História */
+.history-block {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-left: 4px solid #ff7b00;
+    transition: transform 0.3s ease;
+}
+
+.history-block:hover {
+    transform: translateX(10px);
+}
+
+/* Timeline */
+.timeline-item {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+}
+
+.timeline-item::before {
+    content: '•';
+    color: #ff7b00;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: -5px;
+}
+
+/* Missão */
+.mission-content {
+    background: linear-gradient(to right, #fff, #fff8f0);
+    padding: 2rem;
+    border-radius: 8px;
+    line-height: 1.8;
+}
+
+/* Valores */
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.value-item {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: #fff8f0;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.value-item:hover {
+    transform: translateY(-5px);
+}
+
+.value-item i {
+    color: #ff7b00;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.value-item h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
