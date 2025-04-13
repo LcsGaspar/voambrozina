@@ -59,7 +59,9 @@
         .file-input-container {
             position: relative;
             overflow: hidden;
-            display: inline-block;
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.2s;
         }
 
         .file-input-container input[type="file"] {
@@ -71,13 +73,48 @@
             cursor: pointer;
         }
 
+        .file-input-container:hover {
+            transform: translateY(-2px);
+        }
+
         .file-input-label {
-            background-color: #f0f0f0;
-            padding: 0.8rem 1.5rem;
-            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #FF7F27;
+            color: white !important;
+            padding: 1.2rem 2rem;
+            border-radius: 8px;
             cursor: pointer;
-            border: 2px solid #ddd;
-            color: #555;
+            border: 2px solid #E66000;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .file-input-label:hover {
+            background-color: #E66000;
+            box-shadow: 0 4px 15px rgba(230, 96, 0, 0.4);
+        }
+
+        .file-input-label::before {
+            content: "📁";
+            font-size: 1.4rem;
+        }
+
+        /* Adicionar feedback visual quando arquivo é selecionado */
+        .file-input-container.has-file .file-input-label {
+            background-color: #4CAF50;
+            border-color: #45a049;
+        }
+
+        .file-input-container.has-file .file-input-label:hover {
+            background-color: #45a049;
+        }
+
+        .file-input-container.has-file .file-input-label::before {
+            content: "✓";
         }
 
         button {
@@ -226,6 +263,28 @@
                 justify-content: center;
             }
         }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-input-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 300px;
+            gap: 8px;
+        }
+
+        input[type="number"],
+        input[type="file"] {
+            padding: 6px;
+            font-size: 1rem;
+        }
+
     </style>
 </head>
 <body>
@@ -237,10 +296,19 @@
         <h1>Upload de PDF</h1>
 
         <form action="{{ url_for('pdf.upload_pdf') }}" method="post" enctype="multipart/form-data" class="upload-form" id="uploadForm">
+            <div class="seleciona-ano">
+                <label for="ano">Ano:</label>
+                <input type="number" id="ano" name="ano" min="2000" max="2100">
+            </div>
+            <br/>
             <div class="file-input-container">
-                <label class="file-input-label">
-                    Selecionar arquivo
-                    <input type="file" name="file" accept=".pdf" id="fileInput">
+                <!--
+                <label for="fileInput">Selecionar arquivo</label>
+                <input type="file" name="file" accept=".pdf" id="fileInput">
+                -->
+                <input type="file" name="file" accept=".pdf" id="fileInput">
+                <label for="fileInput" class="file-input-label">
+                    Escolher Arquivo PDF
                 </label>
             </div>
             <button type="submit">Fazer Upload</button>
@@ -256,28 +324,32 @@
             </div>
         </div>
 
+        <!-- upload_pdf.html -->
         <h2>Arquivos Disponíveis</h2>
-        <ul class="files-list">
-            {% for arquivo in arquivos %}
-                <li>
-                    <span class="file-name">{{ arquivo }}</span>
-                    <div class="file-actions">
-                        <a href="{{ url_for('static', filename='relatorios/' ~ arquivo) }}"
-                           target="_blank"
-                           class="btn-view"
-                           style="text-decoration: none;">
-                            <button type="button" class="btn-view">Visualizar</button>
-                        </a>
-                        <form action="{{ url_for('pdf.delete_pdf', filename=arquivo) }}"
-                              method="post"
-                              class="delete-form"
-                              style="display:inline;">
-                            <button type="submit" class="btn-delete">Excluir</button>
-                        </form>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for ano in arquivos %}
+            <h3>Ano {{ ano }}</h3>
+            <ul class="files-list">
+                {% for arquivo in arquivos[ano] %}
+                    <li>
+                        <span class="file-name">{{ arquivo }}</span>
+                        <div class="file-actions">
+                            <a href="{{ url_for('static', filename='relatorios/' ~ ano ~ '/' ~ arquivo) }}"
+                            target="_blank"
+                            class="btn-view"
+                            style="text-decoration: none;">
+                                <button type="button" class="btn-view">Visualizar</button>
+                            </a>
+                            <form action="{{ url_for('pdf.delete_pdf', ano=ano, filename=arquivo) }}"
+                                method="post"
+                                class="delete-form"
+                                style="display:inline;">
+                                <button type="submit" class="btn-delete">Excluir</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
     </div>
 
     <a href="{{ url_for('auth.usuarios') }}" class="back-link">Voltar</a>
@@ -292,6 +364,12 @@
         const fileSize = document.getElementById('fileSize');
 
         fileInput.addEventListener('change', function(e) {
+            const container = this.closest('.file-input-container');
+            if(this.files.length > 0) {
+                container.classList.add('has-file');
+            } else {
+                container.classList.remove('has-file');
+            }
             const file = e.target.files[0];
             if (file) {
                 previewContainer.classList.add('active');
@@ -381,6 +459,14 @@
         if (successMessage) {
             showPopup(decodeURIComponent(successMessage), 'success');
         }
+
+        // Preenche o campo de ano com o ano atual
+        document.addEventListener('DOMContentLoaded', () => {
+            const anoInput = document.getElementById('ano');
+            const anoAtual = new Date().getFullYear();
+            anoInput.value = anoAtual;
+        });
+
     </script>
 </body>
 </html>

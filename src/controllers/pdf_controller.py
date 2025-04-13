@@ -10,19 +10,20 @@ def upload_pdf():
     if request.method == 'POST':
         if 'file' not in request.files:
             return '', 204
-        
+        # Adicionado o ano e passando-o como paramtro no form
+        ano = request.form.get('ano')
         file = request.files['file']
-        if FileService.save_file(file):
+        if FileService.save_file(file, ano=ano):
             return redirect(url_for('pdf.upload_pdf'))
         return '', 204
 
     arquivos = FileService.list_files()
     return render_template('upload_pdf.html', arquivos=arquivos)
 
-@pdf.route('/delete_pdf/<filename>', methods=['POST'])
+@pdf.route('/delete_pdf/<ano>/<filename>', methods=['POST'])
 @login_required
-def delete_pdf(filename):
-    FileService.delete_file(filename)
+def delete_pdf(ano, filename):
+    FileService.delete_file(filename, ano)
     return redirect(url_for('pdf.upload_pdf'))
 
 @pdf.route('/listar_pdfs')
