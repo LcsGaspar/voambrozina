@@ -52,4 +52,9 @@ class FileService:
                 pdfs = [f for f in os.listdir(year_dir) if f.endswith('.pdf')]
                 if pdfs:
                     files_by_year[item] = pdfs
-        return files_by_year
+        #return files_by_year
+        return dict(sorted(
+            files_by_year.items(),
+            key=lambda item: int(item[0]),
+            reverse=True
+        ))
