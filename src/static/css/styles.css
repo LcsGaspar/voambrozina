@@ -1,0 +1,268 @@
+:root {
+    --primary-color: #f97316;
+    --secondary-color: #1e40af;
+    --accent-color: #3b82f6;
+    --success-color: #10b981;
+    --danger-color: #f472b6;
+    --bg-color: #f9fafb;
+    --card-bg: #ffffff;
+    --text-color: #1f2937;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+  }
+  
+  .header {
+    background: linear-gradient(90deg, var(--primary-color), #fb923c);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    box-shadow: var(--shadow);
+  }
+  
+  .header i {
+    font-size: 2rem;
+  }
+  
+  .header h1 {
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+    font-weight: 700;
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+  
+  .upload-section {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  input[type="file"],
+  select,
+  button {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  input[type="file"]:hover,
+  select:hover,
+  button:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  }
+  
+  button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  button:hover {
+    background: #ea580c;
+  }
+  
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.5s ease-in;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  }
+  
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card i {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .card h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+  }
+  
+  .card p {
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+  
+  .graphs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .graph {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    animation: fadeInUp 0.7s ease-in;
+    border: 1px solid #e5e7eb;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .graph::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+  }
+  
+  .graph .plotly-graph-div {
+    border-radius: 8px;
+  }
+  
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+  
+  .loader {
+    display: none;
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    animation: pulse 1.5s infinite;
+  }
+  
+  .success-message,
+  .error-message {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    animation: fadeIn 0.5s ease-in;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .success-message {
+    color: var(--success-color);
+  }
+  
+  .error-message {
+    color: #ef4444;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  @media (max-width: 768px) {
+    .upload-section {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  
+    .card {
+      padding: 1rem;
+    }
+  
+    .graph {
+      padding: 1rem;
+    }
+  
+    .header h1 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    input[type="file"],
+    select,
+    button {
+      width: 100%;
+      font-size: 0.9rem;
+    }
+  
+    .graph {
+      min-height: 250px;
+    }
+  }
