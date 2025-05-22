@@ -63,7 +63,7 @@
             <p>Total de Oficinas</p>
           </div>
         </div>
-
+        <!--
         <div class="dashboard-section">
           <h2>Distribuição por Oficina</h2>
           <div class="table-container">
@@ -129,11 +129,77 @@
             </table>
           </div>
         </div>
+        -->
+
+        <div class="dashboard-section graphs">
+          <div class="graph-card">
+            <h2>Gráfico de Oficinas</h2>
+            <div id="graficoOficinas"></div>
+          </div>
+
+          <div class="graph-card">
+            <h2>Gráfico de Faixa Etária</h2>
+            <div id="graficoFaixaEtaria"></div>
+          </div>
+
+          <div class="graph-card">
+            <h2>Gráfico de Distribuição por Idade</h2>
+            <div id="graficoIdade"></div>
+          </div>
+        </div>
       {% else %}
         <div class="error-message">Não foram encontrados dados para os filtros selecionados.</div>
       {% endif %}
     {% endif %}
   </div>
+
+  <script>
+    // Gráfico de Oficinas
+    const oficinasData = {
+      x: [{% for oficina in oficinas.keys() %}'{{ oficina }}',{% endfor %}],
+      y: [{% for quantidade in oficinas.values() %}{{ quantidade }},{% endfor %}],
+      type: 'bar',
+      marker: {
+        color: 'rgb(54, 162, 235)'
+      }
+    };
+
+    Plotly.newPlot('graficoOficinas', [oficinasData], {
+      margin: { t: 10 },
+      yaxis: { title: 'Quantidade de Inscritos' }
+    });
+
+    // Gráfico de Faixa Etária
+    const faixaEtariaData = {
+      x: [{% for faixa in faixas_etarias.keys() %}'{{ faixa }}',{% endfor %}],
+      y: [{% for quantidade in faixas_etarias.values() %}{{ quantidade }},{% endfor %}],
+      type: 'bar',
+      marker: {
+        color: 'rgb(75, 192, 192)'
+      }
+    };
+
+    Plotly.newPlot('graficoFaixaEtaria', [faixaEtariaData], {
+      margin: { t: 10 },
+      yaxis: { title: 'Quantidade de Inscritos' }
+    });
+
+    // Gráfico de Distribuição por Idade
+    const idadeData = {
+      x: [{% for idade in distribuicao_idade.keys()|sort %}{{ idade }},{% endfor %}],
+      y: [{% for idade in distribuicao_idade.keys()|sort %}{{ distribuicao_idade[idade] }},{% endfor %}],
+      type: 'bar',
+      marker: {
+        color: 'rgb(255, 99, 132)'
+      }
+    };
+
+    Plotly.newPlot('graficoIdade', [idadeData], {
+      margin: { t: 10 },
+      xaxis: { title: 'Idade' },
+      yaxis: { title: 'Quantidade de Inscritos' }
+    });
+  </script>
 </body>
 
 </html>
