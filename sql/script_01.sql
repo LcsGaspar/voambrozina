@@ -22,3 +22,11 @@ create table usuarios(
 	criado DATETIME,
 	PRIMARY KEY(id)
 );
+
+create table oficinas(
+	id_oficina INT NOT NULL AUTO_INCREMENT,
+	nome_oficina varchar(100),
+	PRIMARY KEY(id_oficina)
+);
+
+INSERT INTO oficinas (id_oficina, nome_oficina) values (1, 'Informática'), (2, 'Clubinho de Inglês'), (3, 'Educação Ambiental'), (4, 'Inclusão Digital'), (5, 'Pequeninos'), (6, 'Mundo Digital'), (7, 'Projeto de vida')

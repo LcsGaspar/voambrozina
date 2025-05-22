@@ -12,11 +12,13 @@ def create_app():
     from controllers.registration_controller import registration
     from controllers.pdf_controller import pdf
     from controllers.user_controller import users
+    from controllers.dashboard_controller import dashboard
 
     app.register_blueprint(auth)
     app.register_blueprint(registration)
     app.register_blueprint(pdf)
     app.register_blueprint(users)
+    app.register_blueprint(dashboard)    
 
     # Register main routes
     @app.route('/')

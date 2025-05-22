@@ -4,27 +4,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Interativo de Pessoas Cadastradas</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  <title>Dashboard - Vó Ambrosina</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/styles.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
   <div class="header">
     <i class="fas fa-chart-line"></i>
-    <h1>Dashboard de Pessoas Cadastradas</h1>
+    <h1>Dashboard - Vó Ambrosina</h1>
   </div>
 
   <div class="container">
-    <div class="upload-section">
-      <input type="file" id="inputExcel" accept=".xlsx, .xls, .csv" aria-label="Selecionar arquivo Excel ou CSV">
-      <select id="anoSelecionado" onchange="filtrarPorMesEAno()" style="display:none;" aria-label="Selecionar ano">
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% else %}
+    <div class="filters-section">
+      <select id="anoSelecionado" onchange="filtrarPorMesEAno()" aria-label="Selecionar ano">
         <option value="0">Todos os Anos</option>
+        {% for ano in anos_disponiveis %}
+            <option value="{{ ano }}">{{ ano }}</option>
+        {% endfor %}
       </select>
-      <select id="mesSelecionado" onchange="filtrarPorMesEAno()" style="display:none;" aria-label="Selecionar mês">
+      <select id="mesSelecionado" onchange="filtrarPorMesEAno()" aria-label="Selecionar mês">
         <option value="0">Todos os Meses</option>
         <option value="1">Janeiro</option>
         <option value="2">Fevereiro</option>
@@ -39,44 +42,66 @@
         <option value="11">Novembro</option>
         <option value="12">Dezembro</option>
       </select>
-      <button id="exportarDados" style="display:none;" onclick="exportarDadosFiltrados()">Exportar Dados</button>
-      <div class="loader" id="loader" aria-live="polite">Carregando dados...</div>
     </div>
+      <div class="cards">
+        <div class="card">
+          <i class="fas fa-users"></i>
+          <h3>{{ total_inscritos }}</h3>
+          <p>Total de Inscritos</p>
+        </div>
 
-    <div class="cards">
-      <div class="card">
-        <i class="fas fa-users"></i>
-        <h3 id="totalPessoas">0</h3>
-        <p>Total de Pessoas</p>
+        <div class="card">
+          <i class="fas fa-book"></i>
+          <h3>{{ oficinas|length }}</h3>
+          <p>Total de Oficinas</p>
+        </div>
       </div>
-      <div class="card">
-        <i class="fas fa-male"></i>
-        <h3 id="totalHomens">0</h3>
-        <p>Total Homens</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-female"></i>
-        <h3 id="totalMulheres">0</h3>
-        <p>Total Mulheres</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-book"></i>
-        <h3 id="totalOficinas">0</h3>
-        <p>Oficinas</p>
-      </div>
-    </div>
 
-    <div class="graphs">
-      <div id="grafico_idade" class="graph" aria-describedby="desc_idade"></div>
-      <div id="desc_idade" class="sr-only">Gráfico de histograma mostrando a distribuição de idades das pessoas cadastradas.</div>
-      <div id="grafico_sexo" class="graph" aria-describedby="desc_sexo"></div>
-      <div id="desc_sexo" class="sr-only">Gráfico de barras mostrando a distribuição por sexo das pessoas cadastradas.</div>
-      <div id="grafico_oficina" class="graph" aria-describedby="desc_oficina"></div>
-      <div id="desc_oficina" class="sr-only">Gráfico de barras horizontais mostrando a distribuição por oficina das pessoas cadastradas.</div>
-    </div>
+      <div class="dashboard-section">
+        <h2>Distribuição por Oficina</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Oficina</th>
+                <th>Quantidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for oficina, quantidade in oficinas.items() %}
+              <tr>
+                <td>{{ oficina }}</td>
+                <td>{{ quantidade }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="dashboard-section">
+        <h2>Distribuição por Faixa Etária</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Faixa Etária</th>
+                <th>Quantidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for faixa, quantidade in faixas_etarias.items() %}
+              <tr>
+                <td>{{ faixa }}</td>
+                <td>{{ quantidade }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
   </div>
-
-  <script type="module" src="static/js/main.js"></script>
 </body>
 
 </html>
