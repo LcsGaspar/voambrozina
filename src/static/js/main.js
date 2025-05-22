@@ -26,3 +26,5 @@ function exibirErro(mensagem) {
   document.querySelector('.upload-section').appendChild(errorMessage);
   setTimeout(() => errorMessage.remove(), 5000);
 }
+
+window.filtrarPorMesEAno = filtrarPorMesEAno;

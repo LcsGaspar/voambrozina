@@ -9,13 +9,13 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
+
         user = User.find_by_credentials(email, password)
         if user:
             session['user_id'] = user.id
             session['user_email'] = user.email
-            return redirect(url_for('auth.usuarios'))
-            
+            return redirect(url_for('auth.dashboard'))
+
     return render_template('login.html')
 
 @auth.route('/logout')
@@ -28,3 +28,9 @@ def logout():
 def usuarios():
     usuarios = User.get_all()
     return render_template('usuarios.html', usuarios=usuarios)
+
+@auth.route('/dashboard')
+@login_required
+def dashboard():
+    inscritos = User.get_all()
+    return render_template('dashboard.html')
