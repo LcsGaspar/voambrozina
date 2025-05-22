@@ -146,6 +146,11 @@
             <h2>Gráfico de Distribuição por Idade</h2>
             <div id="graficoIdade"></div>
           </div>
+
+          <div class="graph-card">
+            <h2>Distribuição por Bairro</h2>
+            <div id="graficoBairros"></div>
+          </div>
         </div>
       {% else %}
         <div class="error-message">Não foram encontrados dados para os filtros selecionados.</div>
@@ -199,6 +204,28 @@
         margin: { t: 10 },
         xaxis: { title: 'Idade' },
         yaxis: { title: 'Quantidade de Inscritos' }
+      });
+
+      // Gráfico de Distribuição por Bairro
+      const bairrosData = {
+        x: [{% for bairro in bairros.keys() %}'{{ bairro }}',{% endfor %}],
+        y: [{% for quantidade in bairros.values() %}{{ quantidade }},{% endfor %}],
+        type: 'bar',
+        marker: {
+          color: 'rgb(147, 197, 253)'  // Tom de azul mais claro
+        }
+      };
+
+      Plotly.newPlot('graficoBairros', [bairrosData], {
+        margin: { t: 30, b: 100, l: 60, r: 20 },
+        xaxis: { 
+          title: 'Bairros',
+          tickangle: 45  // Rotaciona os labels para melhor legibilidade
+        },
+        yaxis: { 
+          title: 'Quantidade de Inscritos'
+        },
+        height: 400  // Altura fixa para o gráfico
       });
     </script>
   {% endif %}

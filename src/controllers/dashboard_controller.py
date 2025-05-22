@@ -19,6 +19,7 @@ def show_dashboard():
         'oficinas': {},
         'faixas_etarias': {},
         'distribuicao_idade': {},
+        'bairros': {},
         'dados_brutos': []
     }
     
@@ -31,6 +32,7 @@ def show_dashboard():
                          oficinas=dashboard_data['oficinas'],
                          faixas_etarias=dashboard_data['faixas_etarias'],
                          distribuicao_idade=dashboard_data['distribuicao_idade'],
+                         bairros=dashboard_data['bairros'],
                          dados_brutos=dashboard_data['dados_brutos'],
                          anos_disponiveis=anos_disponiveis,
                          mes_selecionado=mes,

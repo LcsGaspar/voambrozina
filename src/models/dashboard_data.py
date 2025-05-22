@@ -12,6 +12,7 @@ class DashboardData:
             date(criado) as data,
             MONTH(criado) as mes,
             YEAR(criado) as ano,
+            bairro as Bairro,
             case
                 when TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) <= 15 then 'Jovem'
                 when TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) >= 16 
@@ -82,13 +83,18 @@ class DashboardData:
             idade = registro['Idade']
             distribuicao_idade[idade] = distribuicao_idade.get(idade, 0) + 1
 
-        anos_disponiveis = DashboardData.get_years()
+        # Distribuição por bairro
+        bairros = {}
+        for registro in dados:
+            bairro = registro['Bairro'] or 'Não informado'
+            bairro = bairro.strip()
+            bairros[bairro] = bairros.get(bairro, 0) + 1
 
         return {
             'total_inscritos': total_inscritos,
             'oficinas': oficinas,
             'faixas_etarias': faixas_etarias,
             'distribuicao_idade': distribuicao_idade,
-            'dados_brutos': dados,
-            'anos_disponiveis': anos_disponiveis
+            'bairros': bairros,
+            'dados_brutos': dados
         }
