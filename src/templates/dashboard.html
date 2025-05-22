@@ -17,89 +17,99 @@
   </div>
 
   <div class="container">
+    <div class="filters-section">
+      <form method="GET" action="{{ url_for('dashboard.show_dashboard') }}">
+        <select name="ano" aria-label="Selecionar ano">
+          <option value="">Todos os Anos</option>
+          {% for ano in anos_disponiveis %}
+            <option value="{{ ano }}" {% if ano_selecionado == ano|int %}selected{% endif %}>{{ ano }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="mes" aria-label="Selecionar mês">
+          <option value="">Todos os Meses</option>
+          <option value="1" {% if mes_selecionado == 1 %}selected{% endif %}>Janeiro</option>
+          <option value="2" {% if mes_selecionado == 2 %}selected{% endif %}>Fevereiro</option>
+          <option value="3" {% if mes_selecionado == 3 %}selected{% endif %}>Março</option>
+          <option value="4" {% if mes_selecionado == 4 %}selected{% endif %}>Abril</option>
+          <option value="5" {% if mes_selecionado == 5 %}selected{% endif %}>Maio</option>
+          <option value="6" {% if mes_selecionado == 6 %}selected{% endif %}>Junho</option>
+          <option value="7" {% if mes_selecionado == 7 %}selected{% endif %}>Julho</option>
+          <option value="8" {% if mes_selecionado == 8 %}selected{% endif %}>Agosto</option>
+          <option value="9" {% if mes_selecionado == 9 %}selected{% endif %}>Setembro</option>
+          <option value="10" {% if mes_selecionado == 10 %}selected{% endif %}>Outubro</option>
+          <option value="11" {% if mes_selecionado == 11 %}selected{% endif %}>Novembro</option>
+          <option value="12" {% if mes_selecionado == 12 %}selected{% endif %}>Dezembro</option>
+        </select>
+        
+        <button type="submit">Filtrar</button>
+      </form>
+    </div>
+
     {% if error %}
       <div class="error-message">{{ error }}</div>
     {% else %}
-    <div class="filters-section">
-      <select id="anoSelecionado" onchange="filtrarPorMesEAno()" aria-label="Selecionar ano">
-        <option value="0">Todos os Anos</option>
-        {% for ano in anos_disponiveis %}
-            <option value="{{ ano }}">{{ ano }}</option>
-        {% endfor %}
-      </select>
-      <select id="mesSelecionado" onchange="filtrarPorMesEAno()" aria-label="Selecionar mês">
-        <option value="0">Todos os Meses</option>
-        <option value="1">Janeiro</option>
-        <option value="2">Fevereiro</option>
-        <option value="3">Março</option>
-        <option value="4">Abril</option>
-        <option value="5">Maio</option>
-        <option value="6">Junho</option>
-        <option value="7">Julho</option>
-        <option value="8">Agosto</option>
-        <option value="9">Setembro</option>
-        <option value="10">Outubro</option>
-        <option value="11">Novembro</option>
-        <option value="12">Dezembro</option>
-      </select>
-    </div>
-      <div class="cards">
-        <div class="card">
-          <i class="fas fa-users"></i>
-          <h3>{{ total_inscritos }}</h3>
-          <p>Total de Inscritos</p>
+      {% if total_inscritos and total_inscritos > 0 %}
+        <div class="cards">
+          <div class="card">
+            <i class="fas fa-users"></i>
+            <h3>{{ total_inscritos }}</h3>
+            <p>Total de Inscritos</p>
+          </div>
+
+          <div class="card">
+            <i class="fas fa-book"></i>
+            <h3>{{ oficinas|length }}</h3>
+            <p>Total de Oficinas</p>
+          </div>
         </div>
 
-        <div class="card">
-          <i class="fas fa-book"></i>
-          <h3>{{ oficinas|length }}</h3>
-          <p>Total de Oficinas</p>
+        <div class="dashboard-section">
+          <h2>Distribuição por Oficina</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Oficina</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for oficina, quantidade in oficinas.items() %}
+                <tr>
+                  <td>{{ oficina }}</td>
+                  <td>{{ quantidade }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      <div class="dashboard-section">
-        <h2>Distribuição por Oficina</h2>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Oficina</th>
-                <th>Quantidade</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for oficina, quantidade in oficinas.items() %}
-              <tr>
-                <td>{{ oficina }}</td>
-                <td>{{ quantidade }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+        <div class="dashboard-section">
+          <h2>Distribuição por Faixa Etária</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Faixa Etária</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for faixa, quantidade in faixas_etarias.items() %}
+                <tr>
+                  <td>{{ faixa }}</td>
+                  <td>{{ quantidade }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-
-      <div class="dashboard-section">
-        <h2>Distribuição por Faixa Etária</h2>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Faixa Etária</th>
-                <th>Quantidade</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for faixa, quantidade in faixas_etarias.items() %}
-              <tr>
-                <td>{{ faixa }}</td>
-                <td>{{ quantidade }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {% else %}
+        <div class="error-message">Não foram encontrados dados para os filtros selecionados.</div>
+      {% endif %}
     {% endif %}
   </div>
 </body>
