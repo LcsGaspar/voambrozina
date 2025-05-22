@@ -216,6 +216,33 @@
     color: #ef4444;
   }
   
+  .dashboard-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .dashboard-section th,
+  .dashboard-section td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .dashboard-section th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #374151;
+  }
+  
+  .dashboard-section tr:hover {
+    background-color: #f9fafb;
+  }
+  
+  .dashboard-section td:last-child {
+    text-align: right;
+  }
+  
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }

@@ -107,6 +107,28 @@
             </table>
           </div>
         </div>
+
+        <div class="dashboard-section">
+          <h2>Distribuição por Idade</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Idade</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for idade, quantidade in distribuicao_idade.items()|sort %}
+                <tr>
+                  <td>{{ idade }} anos</td>
+                  <td>{{ quantidade }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
       {% else %}
         <div class="error-message">Não foram encontrados dados para os filtros selecionados.</div>
       {% endif %}

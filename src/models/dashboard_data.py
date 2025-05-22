@@ -76,12 +76,19 @@ class DashboardData:
             faixa = registro['Faixa_Etaria']
             faixas_etarias[faixa] += 1
 
+        # Distribuição por idade
+        distribuicao_idade = {}
+        for registro in dados:
+            idade = registro['Idade']
+            distribuicao_idade[idade] = distribuicao_idade.get(idade, 0) + 1
+
         anos_disponiveis = DashboardData.get_years()
 
         return {
             'total_inscritos': total_inscritos,
             'oficinas': oficinas,
             'faixas_etarias': faixas_etarias,
+            'distribuicao_idade': distribuicao_idade,
             'dados_brutos': dados,
             'anos_disponiveis': anos_disponiveis
         }
