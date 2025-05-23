@@ -4,79 +4,245 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Interativo de Pessoas Cadastradas</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  <title>Dashboard - Vó Ambrosina</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/styles.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
   <div class="header">
     <i class="fas fa-chart-line"></i>
-    <h1>Dashboard de Pessoas Cadastradas</h1>
+    <h1>Dashboard - Vó Ambrosina</h1>
   </div>
 
   <div class="container">
-    <div class="upload-section">
-      <input type="file" id="inputExcel" accept=".xlsx, .xls, .csv" aria-label="Selecionar arquivo Excel ou CSV">
-      <select id="anoSelecionado" onchange="filtrarPorMesEAno()" style="display:none;" aria-label="Selecionar ano">
-        <option value="0">Todos os Anos</option>
-      </select>
-      <select id="mesSelecionado" onchange="filtrarPorMesEAno()" style="display:none;" aria-label="Selecionar mês">
-        <option value="0">Todos os Meses</option>
-        <option value="1">Janeiro</option>
-        <option value="2">Fevereiro</option>
-        <option value="3">Março</option>
-        <option value="4">Abril</option>
-        <option value="5">Maio</option>
-        <option value="6">Junho</option>
-        <option value="7">Julho</option>
-        <option value="8">Agosto</option>
-        <option value="9">Setembro</option>
-        <option value="10">Outubro</option>
-        <option value="11">Novembro</option>
-        <option value="12">Dezembro</option>
-      </select>
-      <button id="exportarDados" style="display:none;" onclick="exportarDadosFiltrados()">Exportar Dados</button>
-      <div class="loader" id="loader" aria-live="polite">Carregando dados...</div>
+    <div class="filters-section">
+      <form method="GET" action="{{ url_for('dashboard.show_dashboard') }}">
+        <select name="ano" aria-label="Selecionar ano">
+          <option value="">Todos os Anos</option>
+          {% for ano in anos_disponiveis %}
+            <option value="{{ ano }}" {% if ano_selecionado == ano|int %}selected{% endif %}>{{ ano }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="mes" aria-label="Selecionar mês">
+          <option value="">Todos os Meses</option>
+          <option value="1" {% if mes_selecionado == 1 %}selected{% endif %}>Janeiro</option>
+          <option value="2" {% if mes_selecionado == 2 %}selected{% endif %}>Fevereiro</option>
+          <option value="3" {% if mes_selecionado == 3 %}selected{% endif %}>Março</option>
+          <option value="4" {% if mes_selecionado == 4 %}selected{% endif %}>Abril</option>
+          <option value="5" {% if mes_selecionado == 5 %}selected{% endif %}>Maio</option>
+          <option value="6" {% if mes_selecionado == 6 %}selected{% endif %}>Junho</option>
+          <option value="7" {% if mes_selecionado == 7 %}selected{% endif %}>Julho</option>
+          <option value="8" {% if mes_selecionado == 8 %}selected{% endif %}>Agosto</option>
+          <option value="9" {% if mes_selecionado == 9 %}selected{% endif %}>Setembro</option>
+          <option value="10" {% if mes_selecionado == 10 %}selected{% endif %}>Outubro</option>
+          <option value="11" {% if mes_selecionado == 11 %}selected{% endif %}>Novembro</option>
+          <option value="12" {% if mes_selecionado == 12 %}selected{% endif %}>Dezembro</option>
+        </select>
+        
+        <button type="submit">Filtrar</button>
+      </form>
     </div>
 
-    <div class="cards">
-      <div class="card">
-        <i class="fas fa-users"></i>
-        <h3 id="totalPessoas">0</h3>
-        <p>Total de Pessoas</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-male"></i>
-        <h3 id="totalHomens">0</h3>
-        <p>Total Homens</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-female"></i>
-        <h3 id="totalMulheres">0</h3>
-        <p>Total Mulheres</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-book"></i>
-        <h3 id="totalOficinas">0</h3>
-        <p>Oficinas</p>
-      </div>
-    </div>
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% else %}
+      {% if total_inscritos and total_inscritos > 0 %}
+        <div class="cards">
+          <div class="card">
+            <i class="fas fa-users"></i>
+            <h3>{{ total_inscritos }}</h3>
+            <p>Total de Inscritos</p>
+          </div>
 
-    <div class="graphs">
-      <div id="grafico_idade" class="graph" aria-describedby="desc_idade"></div>
-      <div id="desc_idade" class="sr-only">Gráfico de histograma mostrando a distribuição de idades das pessoas cadastradas.</div>
-      <div id="grafico_sexo" class="graph" aria-describedby="desc_sexo"></div>
-      <div id="desc_sexo" class="sr-only">Gráfico de barras mostrando a distribuição por sexo das pessoas cadastradas.</div>
-      <div id="grafico_oficina" class="graph" aria-describedby="desc_oficina"></div>
-      <div id="desc_oficina" class="sr-only">Gráfico de barras horizontais mostrando a distribuição por oficina das pessoas cadastradas.</div>
-    </div>
+          <div class="card">
+            <i class="fas fa-book"></i>
+            <h3>{{ oficinas|length }}</h3>
+            <p>Total de Oficinas</p>
+          </div>
+        </div>
+        <!--
+        <div class="dashboard-section">
+          <h2>Distribuição por Oficina</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Oficina</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for oficina, quantidade in oficinas.items() %}
+                <tr>
+                  <td>{{ oficina }}</td>
+                  <td>{{ quantidade }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="dashboard-section">
+          <h2>Distribuição por Faixa Etária</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Faixa Etária</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for faixa, quantidade in faixas_etarias.items() %}
+                <tr>
+                  <td>{{ faixa }}</td>
+                  <td>{{ quantidade }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="dashboard-section">
+          <h2>Distribuição por Idade</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Idade</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for idade, quantidade in distribuicao_idade.items()|sort %}
+                <tr>
+                  <td>{{ idade }} anos</td>
+                  <td>{{ quantidade }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        -->
+
+        <div class="dashboard-section graphs">
+          <div class="graph-card">
+            <h2>Gráfico de Oficinas</h2>
+            <div id="graficoOficinas"></div>
+          </div>
+
+          <div class="graph-card">
+            <h2>Gráfico de Faixa Etária</h2>
+            <div id="graficoFaixaEtaria"></div>
+          </div>
+
+          <div class="graph-card">
+            <h2>Gráfico de Distribuição por Idade</h2>
+            <div id="graficoIdade"></div>
+          </div>
+
+          <div class="graph-card">
+            <h2>Distribuição por Bairro</h2>
+            <div id="graficoBairros"></div>
+          </div>
+        </div>
+      {% else %}
+        <div class="error-message">Não foram encontrados dados para os filtros selecionados.</div>
+      {% endif %}
+    {% endif %}
   </div>
 
-  <script type="module" src="static/js/main.js"></script>
+  {% if not error %}
+    <script>
+      // Gráfico de Oficinas (Pizza)
+      const oficinasData = {
+        values: [{% for quantidade in oficinas.values() %}{{ quantidade }},{% endfor %}],
+        labels: [{% for oficina in oficinas.keys() %}'{{ oficina }}',{% endfor %}],
+        type: 'pie',
+        hole: 0.4,  // Isso cria um gráfico tipo donut, remova ou use 0 para pizza tradicional
+        marker: {
+          colors: [
+            'rgb(54, 162, 235)',
+            'rgb(75, 192, 192)',
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(153, 102, 255)',
+            'rgb(255, 205, 86)',
+            'rgb(201, 203, 207)'
+          ]
+        }
+      };
+
+      Plotly.newPlot('graficoOficinas', [oficinasData], {
+        height: 400,
+        margin: { t: 30, b: 30, l: 30, r: 30 },
+        showlegend: true,
+        legend: {
+          orientation: 'h',  // Legenda horizontal
+          y: -0.1  // Posiciona a legenda abaixo do gráfico
+        }
+      });
+
+      // Gráfico de Faixa Etária
+      const faixaEtariaData = {
+        x: [{% for faixa in faixas_etarias.keys() %}'{{ faixa }}',{% endfor %}],
+        y: [{% for quantidade in faixas_etarias.values() %}{{ quantidade }},{% endfor %}],
+        type: 'bar',
+        marker: {
+          color: 'rgb(75, 192, 192)'
+        }
+      };
+
+      Plotly.newPlot('graficoFaixaEtaria', [faixaEtariaData], {
+        margin: { t: 10 },
+        yaxis: { title: 'Quantidade de Inscritos' }
+      });
+
+      // Gráfico de Distribuição por Idade
+      const idadeData = {
+        x: [{% for idade in distribuicao_idade.keys()|sort %}{{ idade }},{% endfor %}],
+        y: [{% for idade in distribuicao_idade.keys()|sort %}{{ distribuicao_idade[idade] }},{% endfor %}],
+        type: 'bar',
+        marker: {
+          color: 'rgb(255, 99, 132)'
+        }
+      };
+
+      Plotly.newPlot('graficoIdade', [idadeData], {
+        margin: { t: 10 },
+        xaxis: { title: 'Idade' },
+        yaxis: { title: 'Quantidade de Inscritos' }
+      });
+
+      // Gráfico de Distribuição por Bairro
+      const bairrosData = {
+        x: [{% for bairro in bairros.keys() %}'{{ bairro }}',{% endfor %}],
+        y: [{% for quantidade in bairros.values() %}{{ quantidade }},{% endfor %}],
+        type: 'bar',
+        marker: {
+          color: 'rgb(147, 197, 253)'  // Tom de azul mais claro
+        }
+      };
+
+      Plotly.newPlot('graficoBairros', [bairrosData], {
+        margin: { t: 30, b: 100, l: 60, r: 20 },
+        xaxis: { 
+          title: 'Bairros',
+          tickangle: 45  // Rotaciona os labels para melhor legibilidade
+        },
+        yaxis: { 
+          title: 'Quantidade de Inscritos'
+        },
+        height: 400  // Altura fixa para o gráfico
+      });
+    </script>
+  {% endif %}
 </body>
 
 </html>

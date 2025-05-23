@@ -35,6 +35,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
+    document.getElementById('formulario-inscricao').addEventListener('submit', function(e) {
+        // Adicione este log
+        console.log('Dados do formulário:', new FormData(this));
+        console.log('Bairro:', document.getElementById('bairro').value);
+    });
 });
 
 function validatePhone(input) {
@@ -56,9 +62,11 @@ async function buscarEndereco(cep) {
     try {
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         const data = await response.json();
-        if (data.erro) alert("CEP não encontrado.");
-        else {
+        if (data.erro) {
+            alert("CEP não encontrado.");
+        } else {
             document.getElementById("rua").value = data.logradouro;
+            document.getElementById("bairro").value = data.bairro; // Adiciona preenchimento do bairro
             document.getElementById("cidade").value = data.localidade;
             document.getElementById("estado").value = data.uf;
         }
