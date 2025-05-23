@@ -1,10 +1,10 @@
 {
     "db_config": {
-        "host": "localhost",
-        "user": "root",
-        "password": "gambito",
-        "database": "vo_ambrozina",
+        "host": "dados_sigilosos",
+        "user": "dados_sigilosos",
+        "password": "dados_sigilosos",
+        "database": "dados_sigilosos",
         "port": 3306
     },
-    "secret_key":"secret_key_secreta_top_secret"
+    "secret_key":"dados_sigilosos"
 }
