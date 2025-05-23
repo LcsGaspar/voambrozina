@@ -206,8 +206,8 @@
 
       // Gráfico de Distribuição por Idade
       const idadeData = {
-        x: [{% for idade in distribuicao_idade.keys()|sort %}{{ idade }},{% endfor %}],
-        y: [{% for idade in distribuicao_idade.keys()|sort %}{{ distribuicao_idade[idade] }},{% endfor %}],
+        x: [{% for idade in distribuicao_idade.keys()|sort if idade is not none %}{{ idade }},{% endfor %}],
+        y: [{% for idade in distribuicao_idade.keys()|sort if idade is not none %}{{ distribuicao_idade[idade] }},{% endfor %}],
         type: 'bar',
         marker: {
           color: 'rgb(255, 99, 132)'

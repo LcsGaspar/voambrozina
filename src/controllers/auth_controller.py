@@ -15,7 +15,7 @@ def login():
         if user:
             session['user_id'] = user.id
             session['user_email'] = user.email
-            return redirect(url_for('auth.dashboard'))
+            return redirect(url_for('auth.usuarios'))
 
     return render_template('login.html')
 

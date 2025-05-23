@@ -15,6 +15,8 @@ CREATE table inscricoes(
 	PRIMARY KEY (id_inscricao)
 );
 
+alter table inscricoes add bairro varchar(100);
+
 create table usuarios(
 	id INT AUTO_INCREMENT,
 	email VARCHAR(50),

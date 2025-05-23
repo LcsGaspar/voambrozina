@@ -77,11 +77,12 @@ class DashboardData:
             faixa = registro['Faixa_Etaria']
             faixas_etarias[faixa] += 1
 
-        # Distribuição por idade
+        # Distribuição por idade - com tratamento para valores None
         distribuicao_idade = {}
         for registro in dados:
             idade = registro['Idade']
-            distribuicao_idade[idade] = distribuicao_idade.get(idade, 0) + 1
+            if idade is not None:  # Só adiciona se a idade não for None
+                distribuicao_idade[idade] = distribuicao_idade.get(idade, 0) + 1
 
         # Distribuição por bairro
         bairros = {}

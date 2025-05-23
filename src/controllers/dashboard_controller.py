@@ -26,6 +26,8 @@ def show_dashboard():
     dados = DashboardData.get_dashboard_data(mes=mes, ano=ano)
     dashboard_data = DashboardData.process_dashboard_data(dados) or default_data
     
+    print("Distribuição de idade:", dashboard_data['distribuicao_idade'])
+    
     return render_template('dashboard.html',
                          error=None if dashboard_data['total_inscritos'] > 0 else "Não foram encontrados dados para os filtros selecionados.",
                          total_inscritos=dashboard_data['total_inscritos'],
