@@ -160,19 +160,33 @@
 
   {% if not error %}
     <script>
-      // Gráfico de Oficinas
+      // Gráfico de Oficinas (Pizza)
       const oficinasData = {
-        x: [{% for oficina in oficinas.keys() %}'{{ oficina }}',{% endfor %}],
-        y: [{% for quantidade in oficinas.values() %}{{ quantidade }},{% endfor %}],
-        type: 'bar',
+        values: [{% for quantidade in oficinas.values() %}{{ quantidade }},{% endfor %}],
+        labels: [{% for oficina in oficinas.keys() %}'{{ oficina }}',{% endfor %}],
+        type: 'pie',
+        hole: 0.4,  // Isso cria um gráfico tipo donut, remova ou use 0 para pizza tradicional
         marker: {
-          color: 'rgb(54, 162, 235)'
+          colors: [
+            'rgb(54, 162, 235)',
+            'rgb(75, 192, 192)',
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(153, 102, 255)',
+            'rgb(255, 205, 86)',
+            'rgb(201, 203, 207)'
+          ]
         }
       };
 
       Plotly.newPlot('graficoOficinas', [oficinasData], {
-        margin: { t: 10 },
-        yaxis: { title: 'Quantidade de Inscritos' }
+        height: 400,
+        margin: { t: 30, b: 30, l: 30, r: 30 },
+        showlegend: true,
+        legend: {
+          orientation: 'h',  // Legenda horizontal
+          y: -0.1  // Posiciona a legenda abaixo do gráfico
+        }
       });
 
       // Gráfico de Faixa Etária
