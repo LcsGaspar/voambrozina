@@ -52,28 +52,19 @@ def create_app():
         bairro = request.form.get('bairro')
         cidade = request.form.get('cidade')
         estado = request.form.get('estado')
-        escolaridade = request.form.get('escolaridade')
-        area_interesse = request.form.get('area_interesse')
-        como_conheceu = request.form.get('como_conheceu')
-
-        # Certifique-se que bairro está sendo capturado do formulário
-        bairro = request.form.get('bairro')
         
         # Na query SQL, adicione o campo bairro
         cursor.execute("""
             INSERT INTO inscricoes (
                 nome, email, telefone, cpf, rg, 
-                cep, rua, numero, bairro, cidade, estado,
-                escolaridade, area_interesse, como_conheceu
+                cep, rua, numero, bairro, cidade, estado
             ) VALUES (
                 %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s, %s,
-                %s, %s, %s
+                %s, %s, %s, %s, %s, %s
             )
         """, (
             nome, email, telefone, cpf, rg,
-            cep, rua, numero, bairro, cidade, estado,
-            escolaridade, area_interesse, como_conheceu
+            cep, rua, numero, bairro, cidade, estado
         ))
 
         return 'Inscrição recebida com sucesso!'
