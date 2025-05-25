@@ -1,10 +1,10 @@
 {
     "db_config": {
-        "host": "dados_sigilosos",
-        "user": "dados_sigilosos",
-        "password": "dados_sigilosos",
-        "database": "dados_sigilosos",
-        "port": 3306
+        "host": "gateway01.us-east-1.prod.aws.tidbcloud.com",
+        "user": "4JAuQNPGNSm4BnD.root",
+        "password": "eRPDGO2mjNNZyMdv",
+        "database": "vo_ambrozina",
+        "port": 4000
     },
-    "secret_key":"dados_sigilosos"
+    "secret_key": "secret_key_secreta_top_secret"
 }

@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request
+import os
 
 def create_app():
     app = Flask(__name__)
     
     from config import Config
     app.config.from_object(Config)
-    app.secret_key = Config.get_secret_key()
+    app.secret_key = os.getenv("ENV_SECRET_KEY")  #Config.get_secret_key()
 
     # Register blueprints
     from controllers.auth_controller import auth

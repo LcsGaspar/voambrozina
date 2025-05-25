@@ -1,3 +1,13 @@
+create table usuarios(
+	id INT AUTO_INCREMENT,
+	email VARCHAR(50),
+	senha VARCHAR(300),
+	criado DATETIME,
+	PRIMARY KEY(id)
+);
+
+INSERT INTO usuarios (email, senha) VALUES ('admin@admin.com.br', '46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5');
+
 CREATE table inscricoes(
     id_inscricao INT NOT NULL AUTO_INCREMENT, 
 	nome VARCHAR(200),
@@ -7,22 +17,13 @@ CREATE table inscricoes(
 	cep VARCHAR(9),
 	rua VARCHAR(200),
 	numero INTEGER,
+    bairro varchar(100),
 	cidade VARCHAR(200),
 	estado VARCHAR(2),
 	oficina INTEGER,
 	mensagem TEXT,
 	criado DATETIME,
 	PRIMARY KEY (id_inscricao)
-);
-
-alter table inscricoes add bairro varchar(100);
-
-create table usuarios(
-	id INT AUTO_INCREMENT,
-	email VARCHAR(50),
-	senha VARCHAR(300),
-	criado DATETIME,
-	PRIMARY KEY(id)
 );
 
 create table oficinas(

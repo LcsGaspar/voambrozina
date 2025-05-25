@@ -1,16 +1,22 @@
 import mysql.connector
+import os
 from config import Config
 
 class DatabaseService:
     @staticmethod
     def get_connection():
-        db_config = Config.get_db_config()
+        ENV_DATABASE_HOST = os.getenv("ENV_DATABASE_HOST")
+        ENV_DATABASE_NAME = os.getenv("ENV_DATABASE_NAME")
+        ENV_DATABASE_PASSWORD = os.getenv("ENV_DATABASE_PASSWORD")
+        ENV_DATABASE_PORT = os.getenv("ENV_DATABASE_PORT")
+        ENV_DATABASE_USER = os.getenv("ENV_DATABASE_USER")
+
         return mysql.connector.connect(
-            host=db_config["host"],
-            user=db_config["user"],
-            password=db_config["password"],
-            database=db_config["database"],
-            port=db_config["port"]
+            host=ENV_DATABASE_HOST,
+            user=ENV_DATABASE_USER,
+            password=ENV_DATABASE_PASSWORD,
+            database=ENV_DATABASE_NAME,
+            port=ENV_DATABASE_PORT
         )
 
     @staticmethod
