@@ -11,7 +11,6 @@ class DatabaseService:
         ENV_DATABASE_PORT = os.getenv("ENV_DATABASE_PORT")
         ENV_DATABASE_USER = os.getenv("ENV_DATABASE_USER")
 
-        #db_config = Config.get_db_config()
         return mysql.connector.connect(
             host=ENV_DATABASE_HOST,
             user=ENV_DATABASE_USER,
