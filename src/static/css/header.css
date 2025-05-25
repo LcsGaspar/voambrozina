@@ -1,12 +1,12 @@
 /* Header Styles */
 header {
     background-color: #ff7b00;
-    padding: 15px 0;
+    padding: 30px 0;
     text-align: center;
 }
 
 header img {
-    max-width: 300px;
+    max-width: 400px;
     margin-bottom: 10px;
 }
 
