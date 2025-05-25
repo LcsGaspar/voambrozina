@@ -44,7 +44,10 @@ class FileService:
     def list_files():
         files_by_year = {}
         if not os.path.exists(Config.UPLOAD_FOLDER) or not os.path.isdir(Config.UPLOAD_FOLDER):
-            raise FileNotFoundError(f"Diretório não encontrado: {Config.UPLOAD_FOLDER}")
+            ## Se o diretório não existir, cria
+            os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
+            if not os.path.exists(Config.UPLOAD_FOLDER) or not os.path.isdir(Config.UPLOAD_FOLDER):
+                raise FileNotFoundError(f"Diretório não encontrado: {Config.UPLOAD_FOLDER}")
         
         for item in os.listdir(Config.UPLOAD_FOLDER):
             year_dir = os.path.join(Config.UPLOAD_FOLDER, item)

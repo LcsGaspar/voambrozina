@@ -10,9 +10,8 @@ class DatabaseService:
         ENV_DATABASE_PASSWORD = os.getenv("ENV_DATABASE_PASSWORD")
         ENV_DATABASE_PORT = os.getenv("ENV_DATABASE_PORT")
         ENV_DATABASE_USER = os.getenv("ENV_DATABASE_USER")
-        ENV_SECRET_KEY = os.getenv("ENV_SECRET_KEY")
 
-        db_config = Config.get_db_config()
+        #db_config = Config.get_db_config()
         return mysql.connector.connect(
             host=ENV_DATABASE_HOST,
             user=ENV_DATABASE_USER,
