@@ -69,6 +69,10 @@ def create_app():
         ))
 
         return 'Inscrição recebida com sucesso!'
+    
+    @app.route('/health')
+    def health_check():
+        return 'OK', 200
 
     return app
 
