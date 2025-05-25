@@ -3,6 +3,34 @@
 {% block title %}Vó Ambrozina - Instituição de Caridade{% endblock %}
 
 {% block content %}
+<body>
+<main>
+  <!--botão de login e acessibilidadee-->
+    <div class="topbar-fixa">
+        <div class="login_box">
+          <a href="/login" class="login_text">Login</a>
+        </div>
+      
+        <div class="appearance-menu-wrapper">
+          <button id="appearance-toggle" class="appearance-menu-wrapper" aria-haspopup="true" aria-expanded="false" aria-controls="appearance-menu">Aparência</button>
+      
+          <div id="appearance-menu" class="appearance-menu hidden" role="menu">
+            <div class="menu-section">
+              <p>Tema</p>
+              <button role="menuitemradio" data-theme="light">Claro</button>
+              <button role="menuitemradio" data-theme="dark">Escuro</button>
+              <button role="menuitemradio" data-theme="system">Sistema</button>
+            </div>
+            <div class="menu-section">
+              <p>Tamanho da fonte</p>
+              <button role="menuitemradio" data-font="small">Pequeno</button>
+              <button role="menuitemradio" data-font="medium">Normal</button>
+              <button role="menuitemradio" data-font="large">Grande</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
     <nav>
         <a href="#sobre">Quem Somos</a>
         <a href="#missao">Nossa Missão</a>
@@ -64,7 +92,7 @@
             <div class="content-container">
                 <div class="history-block">
                     <p class="timeline-item">
-                        Existia na Cidade de Caieiras uma senhora benevolente cujo nome é <span class="highlight-text">Ambrosina do Carmo Buonaguide</span>, que realizava diversas ações solidárias para a comunidade. Ambrosina ajudou inúmeros munícipes que trabalhavam na empresa local chamada Melhoramentos e doou terras para muitos cidadãos caieirenses, inclusive para a Paróquia Santo Antônio, onde o santo se tornou padroeiro da cidade.
+                        Existia na Cidade de Caieiras uma senhora benevolente cujo nome é <span class="highlight-text">Ambrozina do Carmo Buonaguide</span>, que realizava diversas ações solidárias para a comunidade. Ambrozina ajudou inúmeros munícipes que trabalhavam na empresa local chamada Melhoramentos e doou terras para muitos cidadãos caieirenses, inclusive para a Paróquia Santo Antônio, onde o santo se tornou padroeiro da cidade.
                     </p>
                 </div>
 
@@ -84,7 +112,7 @@
                     <p class="timeline-item">
                         A atuação iniciou identificando as dificuldades e necessidades sociais encontradas em famílias de alguns bairros do município de Caieiras, incluindo:
                     </p>
-                    <ul class="needs-list">
+                    <ul class="list-items">
                         <li>Vulnerabilidade social</li>
                         <li>Baixa renda familiar</li>
                         <li>Trabalho informal</li>
@@ -189,16 +217,12 @@
             </div>
         </section>
     </div>
+</main>
+
+    <script src="{{ url_for('static', filename='js/acessibilidade.js') }}"></script>
+
     <script>
-        /*
-        let currentImageIndex = 0;
-        const images = [
-            'static/imagens/foto.png',
-            'static/imagens/logo.png',
-            'static/imagens/foto.png',
-            'static/imagens/logo.png'];
-        setInterval(() => changeImage(1), 4000);  // Troca de imagem a cada 4 segundos
-        */
+        
 
         let currentSlide = 0;
         const slides = document.querySelectorAll('.banner-slide');
@@ -244,7 +268,9 @@
         function abrirAabaDoação() {
             window.open("https://www.kickante.com.br/vaquinha-online/campanha-da-vovo", "_blank");
         }
+
     </script>
+</body>
 {% endblock %}
 
 
