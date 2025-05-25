@@ -9,6 +9,40 @@ html, body {
     height: 100%;
 }
 
+/* botao de login */
+
+.topbar-fixa {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #333; /* Usando a variável --bg */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    z-index: 1000;
+}
+
+  /* Login */
+.login_box {
+    display: flex;
+    margin-left: 400px;
+    align-items: center;
+}
+  
+.login_text {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 6px 12px;
+}
+  
+.login_text:hover {
+    background-color: #ff7b00;
+    border-radius: 6px;
+}
+
+
 body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
@@ -57,4 +91,9 @@ main {
     width: 80px;
     height: 3px;
     background-color: #ff7b00;
+}
+
+.list-items {
+    margin-left: 30px;
+    margin-bottom: 20px;
 }
