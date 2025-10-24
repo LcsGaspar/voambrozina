@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/acessibilidade.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
 </head>
 <body>
     {% include 'includes/header.html' %}
@@ -36,5 +37,8 @@
     </main>
 
     {% include 'includes/footer.html' %}
+    <script src="https://cdn.botpress.cloud/webchat/v3.3/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2025/10/24/00/20251024004233-7NX72UV7.js" defer></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 </body>
 </html>
