@@ -8,59 +8,191 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    .dashboard-header {
+      background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+      color: white;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+      opacity: 0.1;
+    }
+
+    .dashboard-header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .dashboard-header i {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .dashboard-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 0.5rem 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-header p {
+      font-size: 1rem;
+      opacity: 0.95;
+      margin-top: 0.5rem;
+    }
+
+    .filters-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      margin: -2rem 1.5rem 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .filters-section form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .filters-section select {
+      min-width: 150px;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filters-section select:hover,
+    .filters-section select:focus {
+      border-color: #f97316;
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+      outline: none;
+    }
+
+    .filters-section button {
+      padding: 0.75rem 2rem;
+      background: linear-gradient(90deg, #f97316, #ea580c);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      height: fit-content;
+    }
+
+    .filters-section button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(249, 115, 22, 0.3);
+    }
+
+    .filters-section button:active {
+      transform: translateY(0);
+    }
+  </style>
 </head>
 
 <body>
-  <div class="header">
-    <i class="fas fa-chart-line"></i>
-    <h1>Dashboard - Vó Ambrozina</h1>
+  <div class="dashboard-header">
+    <div class="dashboard-header-content">
+      <i class="fas fa-chart-line"></i>
+      <h1>Dashboard Analytics</h1>
+      <p>Vó Ambrozina - Análise de Dados em Tempo Real</p>
+    </div>
   </div>
 
   <div class="container">
     <div class="filters-section">
       <form method="GET" action="{{ url_for('dashboard.show_dashboard') }}">
-        <select name="ano" aria-label="Selecionar ano">
-          <option value="">Todos os Anos</option>
-          {% for ano in anos_disponiveis %}
-            <option value="{{ ano }}" {% if ano_selecionado == ano|int %}selected{% endif %}>{{ ano }}</option>
-          {% endfor %}
-        </select>
+        <div class="filter-group">
+          <label for="ano">Ano</label>
+          <select name="ano" id="ano" aria-label="Selecionar ano">
+            <option value="">Todos os Anos</option>
+            {% for ano in anos_disponiveis %}
+              <option value="{{ ano }}" {% if ano_selecionado == ano|int %}selected{% endif %}>{{ ano }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-        <select name="mes" aria-label="Selecionar mês">
-          <option value="">Todos os Meses</option>
-          <option value="1" {% if mes_selecionado == 1 %}selected{% endif %}>Janeiro</option>
-          <option value="2" {% if mes_selecionado == 2 %}selected{% endif %}>Fevereiro</option>
-          <option value="3" {% if mes_selecionado == 3 %}selected{% endif %}>Março</option>
-          <option value="4" {% if mes_selecionado == 4 %}selected{% endif %}>Abril</option>
-          <option value="5" {% if mes_selecionado == 5 %}selected{% endif %}>Maio</option>
-          <option value="6" {% if mes_selecionado == 6 %}selected{% endif %}>Junho</option>
-          <option value="7" {% if mes_selecionado == 7 %}selected{% endif %}>Julho</option>
-          <option value="8" {% if mes_selecionado == 8 %}selected{% endif %}>Agosto</option>
-          <option value="9" {% if mes_selecionado == 9 %}selected{% endif %}>Setembro</option>
-          <option value="10" {% if mes_selecionado == 10 %}selected{% endif %}>Outubro</option>
-          <option value="11" {% if mes_selecionado == 11 %}selected{% endif %}>Novembro</option>
-          <option value="12" {% if mes_selecionado == 12 %}selected{% endif %}>Dezembro</option>
-        </select>
+        <div class="filter-group">
+          <label for="mes">Mês</label>
+          <select name="mes" id="mes" aria-label="Selecionar mês">
+            <option value="">Todos os Meses</option>
+            <option value="1" {% if mes_selecionado == 1 %}selected{% endif %}>Janeiro</option>
+            <option value="2" {% if mes_selecionado == 2 %}selected{% endif %}>Fevereiro</option>
+            <option value="3" {% if mes_selecionado == 3 %}selected{% endif %}>Março</option>
+            <option value="4" {% if mes_selecionado == 4 %}selected{% endif %}>Abril</option>
+            <option value="5" {% if mes_selecionado == 5 %}selected{% endif %}>Maio</option>
+            <option value="6" {% if mes_selecionado == 6 %}selected{% endif %}>Junho</option>
+            <option value="7" {% if mes_selecionado == 7 %}selected{% endif %}>Julho</option>
+            <option value="8" {% if mes_selecionado == 8 %}selected{% endif %}>Agosto</option>
+            <option value="9" {% if mes_selecionado == 9 %}selected{% endif %}>Setembro</option>
+            <option value="10" {% if mes_selecionado == 10 %}selected{% endif %}>Outubro</option>
+            <option value="11" {% if mes_selecionado == 11 %}selected{% endif %}>Novembro</option>
+            <option value="12" {% if mes_selecionado == 12 %}selected{% endif %}>Dezembro</option>
+          </select>
+        </div>
         
-        <button type="submit">Filtrar</button>
+        <button type="submit"><i class="fas fa-filter"></i> Filtrar</button>
       </form>
     </div>
 
     {% if error %}
-      <div class="error-message">{{ error }}</div>
+      <div class="error-message" style="background: linear-gradient(135deg, #fee2e2, #fecaca); border-left: 4px solid #f87171; padding: 1.5rem; border-radius: 8px; color: #991b1b; font-weight: 500;">
+        <i class="fas fa-exclamation-circle"></i> {{ error }}
+      </div>
     {% else %}
       {% if total_inscritos and total_inscritos > 0 %}
-        <div class="cards">
-          <div class="card">
-            <i class="fas fa-users"></i>
-            <h3>{{ total_inscritos }}</h3>
-            <p>Total de Inscritos</p>
+        <div class="cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+          <div class="card" style="background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); color: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(249, 115, 22, 0.2); transition: all 0.3s ease; cursor: default; display: flex; flex-direction: column; align-items: center; text-align: center; transform: translateY(0); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: -50%; right: -50%; width: 200px; height: 200px; background: rgba(255, 255, 255, 0.1); border-radius: 50%;"></div>
+            <i class="fas fa-users" style="font-size: 2.5rem; margin-bottom: 1rem; position: relative; z-index: 1;"></i>
+            <h3 style="font-size: 2.5rem; font-weight: 800; margin: 0.5rem 0; position: relative; z-index: 1;">{{ total_inscritos }}</h3>
+            <p style="font-size: 1rem; opacity: 0.95; margin-top: 0.5rem; position: relative; z-index: 1;">Total de Inscritos</p>
           </div>
 
-          <div class="card">
-            <i class="fas fa-book"></i>
-            <h3>{{ oficinas|length }}</h3>
-            <p>Total de Oficinas</p>
+          <div class="card" style="background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); transition: all 0.3s ease; cursor: default; display: flex; flex-direction: column; align-items: center; text-align: center; transform: translateY(0); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: -50%; right: -50%; width: 200px; height: 200px; background: rgba(255, 255, 255, 0.1); border-radius: 50%;"></div>
+            <i class="fas fa-book" style="font-size: 2.5rem; margin-bottom: 1rem; position: relative; z-index: 1;"></i>
+            <h3 style="font-size: 2.5rem; font-weight: 800; margin: 0.5rem 0; position: relative; z-index: 1;">{{ oficinas|length }}</h3>
+            <p style="font-size: 1rem; opacity: 0.95; margin-top: 0.5rem; position: relative; z-index: 1;">Total de Oficinas</p>
           </div>
         </div>
         <!--
@@ -131,29 +263,43 @@
         </div>
         -->
 
-        <div class="dashboard-section graphs">
-          <div class="graph-card">
-            <h2>Gráfico de Oficinas</h2>
+        <div class="dashboard-section graphs" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+          <div class="graph-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); transition: all 0.3s ease;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+              <i class="fas fa-chart-pie" style="color: #f97316; font-size: 1.5rem;"></i>
+              <h2 style="margin: 0; font-size: 1.5rem; color: #1f2937;">Gráfico de Oficinas</h2>
+            </div>
             <div id="graficoOficinas"></div>
           </div>
 
-          <div class="graph-card">
-            <h2>Gráfico de Faixa Etária</h2>
+          <div class="graph-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); transition: all 0.3s ease;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+              <i class="fas fa-chart-bar" style="color: #3b82f6; font-size: 1.5rem;"></i>
+              <h2 style="margin: 0; font-size: 1.5rem; color: #1f2937;">Gráfico de Faixa Etária</h2>
+            </div>
             <div id="graficoFaixaEtaria"></div>
           </div>
 
-          <div class="graph-card">
-            <h2>Gráfico de Distribuição por Idade</h2>
+          <div class="graph-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); transition: all 0.3s ease;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+              <i class="fas fa-chart-column" style="color: #f59e0b; font-size: 1.5rem;"></i>
+              <h2 style="margin: 0; font-size: 1.5rem; color: #1f2937;">Distribuição por Idade</h2>
+            </div>
             <div id="graficoIdade"></div>
           </div>
 
-          <div class="graph-card">
-            <h2>Distribuição por Bairro</h2>
+          <div class="graph-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); transition: all 0.3s ease;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+              <i class="fas fa-map-location-dot" style="color: #8b5cf6; font-size: 1.5rem;"></i>
+              <h2 style="margin: 0; font-size: 1.5rem; color: #1f2937;">Distribuição por Bairro</h2>
+            </div>
             <div id="graficoBairros"></div>
           </div>
         </div>
       {% else %}
-        <div class="error-message">Não foram encontrados dados para os filtros selecionados.</div>
+        <div class="error-message" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-left: 4px solid #60a5fa; padding: 1.5rem; border-radius: 8px; color: #1e40af; font-weight: 500; text-align: center;">
+          <i class="fas fa-info-circle"></i> Não foram encontrados dados para os filtros selecionados.
+        </div>
       {% endif %}
     {% endif %}
   </div>
@@ -165,27 +311,30 @@
         values: [{% for quantidade in oficinas.values() %}{{ quantidade }},{% endfor %}],
         labels: [{% for oficina in oficinas.keys() %}'{{ oficina }}',{% endfor %}],
         type: 'pie',
-        hole: 0.4,  // Isso cria um gráfico tipo donut, remova ou use 0 para pizza tradicional
+        hole: 0.4,
         marker: {
           colors: [
-            'rgb(54, 162, 235)',
-            'rgb(75, 192, 192)',
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(153, 102, 255)',
-            'rgb(255, 205, 86)',
-            'rgb(201, 203, 207)'
-          ]
-        }
+            '#f97316', '#3b82f6', '#10b981', '#f59e0b', 
+            '#8b5cf6', '#ec4899', '#06b6d4', '#6366f1',
+            '#14b8a6', '#f43f5e', '#84cc16', '#0ea5e9'
+          ],
+          line: { color: 'white', width: 2 }
+        },
+        textposition: 'inside',
+        textinfo: 'percent'
       };
 
       Plotly.newPlot('graficoOficinas', [oficinasData], {
         height: 400,
         margin: { t: 30, b: 30, l: 30, r: 30 },
         showlegend: true,
+        font: { family: 'Inter, sans-serif', size: 12 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
         legend: {
-          orientation: 'h',  // Legenda horizontal
-          y: -0.1  // Posiciona a legenda abaixo do gráfico
+          orientation: 'h',
+          y: -0.15,
+          font: { size: 11 }
         }
       });
 
@@ -195,13 +344,26 @@
         y: [{% for quantidade in faixas_etarias.values() %}{{ quantidade }},{% endfor %}],
         type: 'bar',
         marker: {
-          color: 'rgb(75, 192, 192)'
-        }
+          color: '#3b82f6',
+          line: { color: '#1e40af', width: 1 }
+        },
+        hovertemplate: '<b>%{x}</b><br>Quantidade: %{y}<extra></extra>'
       };
 
       Plotly.newPlot('graficoFaixaEtaria', [faixaEtariaData], {
-        margin: { t: 10 },
-        yaxis: { title: 'Quantidade de Inscritos' }
+        margin: { t: 10, b: 30, l: 60, r: 20 },
+        xaxis: { 
+          title: { text: 'Faixa Etária', font: { size: 12, color: '#1f2937' } },
+          titlefont: { color: '#1f2937' }
+        },
+        yaxis: { 
+          title: { text: 'Quantidade de Inscritos', font: { size: 12, color: '#1f2937' } },
+          titlefont: { color: '#1f2937' }
+        },
+        font: { family: 'Inter, sans-serif', color: '#1f2937' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        hovermode: 'closest'
       });
 
       // Gráfico de Distribuição por Idade
@@ -210,14 +372,24 @@
         y: [{% for idade in distribuicao_idade.keys()|sort if idade is not none %}{{ distribuicao_idade[idade] }},{% endfor %}],
         type: 'bar',
         marker: {
-          color: 'rgb(255, 99, 132)'
-        }
+          color: '#f59e0b',
+          line: { color: '#d97706', width: 1 }
+        },
+        hovertemplate: '<b>%{x} anos</b><br>Quantidade: %{y}<extra></extra>'
       };
 
       Plotly.newPlot('graficoIdade', [idadeData], {
-        margin: { t: 10 },
-        xaxis: { title: 'Idade' },
-        yaxis: { title: 'Quantidade de Inscritos' }
+        margin: { t: 10, b: 30, l: 60, r: 20 },
+        xaxis: { 
+          title: { text: 'Idade', font: { size: 12, color: '#1f2937' } }
+        },
+        yaxis: { 
+          title: { text: 'Quantidade de Inscritos', font: { size: 12, color: '#1f2937' } }
+        },
+        font: { family: 'Inter, sans-serif', color: '#1f2937' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        hovermode: 'closest'
       });
 
       // Gráfico de Distribuição por Bairro
@@ -226,20 +398,26 @@
         y: [{% for quantidade in bairros.values() %}{{ quantidade }},{% endfor %}],
         type: 'bar',
         marker: {
-          color: 'rgb(147, 197, 253)'  // Tom de azul mais claro
-        }
+          color: '#8b5cf6',
+          line: { color: '#7c3aed', width: 1 }
+        },
+        hovertemplate: '<b>%{x}</b><br>Quantidade: %{y}<extra></extra>'
       };
 
       Plotly.newPlot('graficoBairros', [bairrosData], {
-        margin: { t: 30, b: 100, l: 60, r: 20 },
+        margin: { t: 10, b: 100, l: 60, r: 20 },
         xaxis: { 
-          title: 'Bairros',
-          tickangle: 45  // Rotaciona os labels para melhor legibilidade
+          title: { text: 'Bairros', font: { size: 12, color: '#1f2937' } },
+          tickangle: 45
         },
         yaxis: { 
-          title: 'Quantidade de Inscritos'
+          title: { text: 'Quantidade de Inscritos', font: { size: 12, color: '#1f2937' } }
         },
-        height: 400  // Altura fixa para o gráfico
+        font: { family: 'Inter, sans-serif', color: '#1f2937' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        hovermode: 'closest',
+        height: 450
       });
     </script>
   {% endif %}
