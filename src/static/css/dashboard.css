@@ -1,0 +1,372 @@
+/* ====================================
+   Dashboard - Estilos Específicos
+   ==================================== */
+
+/* -------- Dashboard Header -------- */
+.dashboard-header {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  color: white;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+  opacity: 0.1;
+}
+
+.dashboard-header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-header i {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header p {
+  font-size: 1rem;
+  opacity: 0.95;
+  margin-top: 0.5rem;
+}
+
+/* -------- Filters Section -------- */
+.filters-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin: -2rem 1.5rem 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.filters-section form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.filters-section select {
+  min-width: 150px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filters-section select:hover,
+.filters-section select:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  outline: none;
+}
+
+.filters-section button {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(90deg, #f97316, #ea580c);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: fit-content;
+}
+
+.filters-section button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(249, 115, 22, 0.3);
+}
+
+.filters-section button:active {
+  transform: translateY(0);
+}
+
+/* -------- Cards Container -------- */
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.dashboard-card {
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.dashboard-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-card i {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-card h3 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+}
+
+.dashboard-card p {
+  font-size: 1rem;
+  opacity: 0.95;
+  margin-top: 0.5rem;
+}
+
+.dashboard-card-inscritos {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  color: white;
+}
+
+.dashboard-card-oficinas {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: white;
+}
+
+/* -------- Error Messages -------- */
+.dashboard-error {
+  padding: 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-error-danger {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border-left: 4px solid #f87171;
+  color: #991b1b;
+}
+
+.dashboard-error-info {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-left: 4px solid #60a5fa;
+  color: #1e40af;
+  text-align: center;
+}
+
+/* -------- Graphs Section -------- */
+.dashboard-graphs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.graph-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.graph-card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.graph-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.graph-card-header i {
+  font-size: 1.5rem;
+}
+
+.graph-card-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1f2937;
+}
+
+/* -------- Icon Colors -------- */
+.icon-oficinas {
+  color: #f97316;
+}
+
+.icon-faixa-etaria {
+  color: #3b82f6;
+}
+
+.icon-idade {
+  color: #f59e0b;
+}
+
+.icon-bairros {
+  color: #8b5cf6;
+}
+
+/* -------- Responsive Design -------- */
+@media (max-width: 768px) {
+  .dashboard-header {
+    padding: 2rem 1rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .dashboard-header i {
+    font-size: 2rem;
+  }
+
+  .filters-section {
+    margin: -1.5rem 1rem 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .filters-section form {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filters-section select,
+  .filters-section button {
+    width: 100%;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .dashboard-graphs {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .graph-card {
+    padding: 1.5rem;
+  }
+
+  .dashboard-card h3 {
+    font-size: 2rem;
+  }
+
+  .dashboard-card i {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-header p {
+    font-size: 0.9rem;
+  }
+
+  .filters-section {
+    margin: -1rem 0.5rem 1rem;
+    padding: 1rem;
+  }
+
+  .dashboard-cards {
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-card {
+    padding: 1.5rem;
+  }
+
+  .dashboard-card h3 {
+    font-size: 1.8rem;
+  }
+
+  .dashboard-card i {
+    font-size: 2rem;
+  }
+
+  .dashboard-card p {
+    font-size: 0.9rem;
+  }
+
+  .graph-card-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .graph-card {
+    padding: 1rem;
+  }
+}
